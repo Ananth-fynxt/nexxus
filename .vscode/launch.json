@@ -1,0 +1,22 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Attach",
+			"request": "attach",
+			"hostName": "localhost",
+			"port": 8000
+		},
+		{
+			"type": "java",
+			"name": "OrgApplication",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"mainClass": "fynxt.org.OrgApplication",
+			"projectName": "org",
+			"console": "integratedTerminal",
+			"preLaunchTask": "gradle: services:org:assemble"
+		}
+	]
+}
