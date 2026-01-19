@@ -1,0 +1,9 @@
+CREATE TABLE brands (
+	id TEXT PRIMARY KEY NOT NULL,
+	name TEXT NOT NULL UNIQUE,
+	email TEXT NOT NULL UNIQUE,
+	created_at TIMESTAMP NOT NULL,
+	updated_at TIMESTAMP NOT NULL,
+	created_by TEXT NOT NULL,
+	updated_by TEXT NOT NULL
+);
