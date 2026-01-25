@@ -1,3 +1,5 @@
+import org.gradle.api.artifacts.VersionCatalogsExtension
+
 plugins {
     java
 }
@@ -6,14 +8,14 @@ repositories {
     mavenCentral()
 }
 
+val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
 dependencies {
-    constraints {
-        implementation("org.apache.commons:commons-text:1.11.0")
-    }
+    implementation(platform(libs.findLibrary("spring-boot-dependencies").get()))
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.1")
+    compileOnly(libs.findLibrary("lombok").get())
 
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    annotationProcessor(libs.findLibrary("lombok").get())
 }
 
 java {
