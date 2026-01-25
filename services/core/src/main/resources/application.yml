@@ -6,7 +6,7 @@ spring:
     active: ${PROFILE}
 
 server:
-  port: ${PORT}
+  port: ${PORT:7111}
   
 logging:
   level:

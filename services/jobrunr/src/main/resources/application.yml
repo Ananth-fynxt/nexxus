@@ -11,7 +11,7 @@ spring:
     password: ${DATABASE_PASSWORD}
 
 server:
-  port: ${PORT:8000}
+  port: ${PORT:7112}
 
 jobrunr:
   database:
