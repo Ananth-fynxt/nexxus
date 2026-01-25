@@ -1,11 +1,13 @@
 package fynxt.database.config;
 
 import jakarta.persistence.EntityManager;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@Configuration
+@AutoConfiguration
 @ConditionalOnClass(EntityManager.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
-public class JpaAutoConfiguration {}
+@ComponentScan(basePackages = "fynxt.database")
+public class DatabaseAutoConfiguration {}

@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: jobrunr-service
+
+  profiles:
+    active: ${PROFILE:dev}
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+
+server:
+  port: ${PORT:8000}
+
+jobrunr:
+  database:
+    skip-create: false
+    table-prefix: ""
+    database-name: jobrunr
+    type: sql
+
+  jobs:
+    default-number-of-retries: 10
+    retry-back-off-time-seed: 3
+    metrics:
+      enabled: false
+
+  job-scheduler:
+    enabled: true
+
+  background-job-server:
+    enabled: true
+    poll-interval-in-seconds: 15
+    delete-succeeded-jobs-after: 36h
+    permanently-delete-deleted-jobs-after: 72h
+    metrics:
+      enabled: true
+
+  dashboard:
+    enabled: true
+    path: /jobrunr-dashboard
+
+  miscellaneous:
+    allow-anonymous-data-usage: true
+
+logging:
+  level:
+    root: INFO
+    org.jobrunr: INFO
