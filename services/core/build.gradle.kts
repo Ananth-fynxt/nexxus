@@ -6,6 +6,5 @@ plugins {
 
 dependencies {
     implementation(platform(libs.spring.boot.dependencies))
-    implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.webmvc)
 }
-
