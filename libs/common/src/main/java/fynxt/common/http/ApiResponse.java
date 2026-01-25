@@ -36,6 +36,9 @@ public class ApiResponse<T> {
 		private String message;
 		private String details;
 		private Object validationErrors;
+
+		@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
+		private OffsetDateTime timestamp;
 	}
 
 	@Getter

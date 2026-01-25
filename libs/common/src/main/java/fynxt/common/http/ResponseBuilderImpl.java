@@ -1,9 +1,11 @@
 package fynxt.common.http;
 
 import fynxt.common.constants.ErrorCode;
+import fynxt.common.exception.ErrorDetail;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,11 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class ResponseBuilderImpl implements ResponseBuilder {
 
+	private static final String SUCCESS_CODE = ErrorCode.SUCCESS.getCode();
+
 	@Override
 	public ResponseEntity<ApiResponse<Object>> success(Object data, String message) {
 		return ResponseEntity.ok(ApiResponse.builder()
 				.timestamp(now())
-				.code("SUCCESS")
+				.code(SUCCESS_CODE)
 				.message(message)
 				.data(data)
 				.build());
@@ -49,7 +53,7 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 
 		return ResponseEntity.ok(ApiResponse.builder()
 				.timestamp(now())
-				.code("SUCCESS")
+				.code(SUCCESS_CODE)
 				.message(message)
 				.data(page.getContent())
 				.metadata(metadata)
@@ -58,20 +62,29 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 
 	@Override
 	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, HttpStatus status) {
-		return error(errorCode, null, status);
+		return error(errorCode, null, status, null);
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String details, HttpStatus status) {
+	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String detail, HttpStatus status) {
+		return error(errorCode, detail, status, null);
+	}
+
+	@Override
+	public ResponseEntity<ApiResponse<Object>> error(
+			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors) {
+		OffsetDateTime timestamp = now();
 		return ResponseEntity.status(status)
 				.body(ApiResponse.builder()
-						.timestamp(now())
+						.timestamp(timestamp)
 						.code(errorCode.getCode())
 						.message(errorCode.getMessage())
 						.error(ApiResponse.ErrorDetails.builder()
 								.code(errorCode.getCode())
 								.message(errorCode.getMessage())
-								.details(details)
+								.details(detail)
+								.validationErrors(errors != null && !errors.isEmpty() ? errors : null)
+								.timestamp(timestamp)
 								.build())
 						.build());
 	}

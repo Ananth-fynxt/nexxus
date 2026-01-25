@@ -1,6 +1,7 @@
 package fynxt.common.constants;
 
 public enum ErrorCode {
+	SUCCESS("0000", "Success"),
 	GENERIC_ERROR("1000", "An unexpected error occurred"),
 	VALIDATION_ERROR("1001", "Validation failed"),
 	INVALID_REQUEST("1002", "Invalid request format"),

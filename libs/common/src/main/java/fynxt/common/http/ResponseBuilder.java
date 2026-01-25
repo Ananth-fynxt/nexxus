@@ -1,6 +1,9 @@
 package fynxt.common.http;
 
 import fynxt.common.constants.ErrorCode;
+import fynxt.common.exception.ErrorDetail;
+
+import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -18,5 +21,8 @@ public interface ResponseBuilder {
 
 	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, HttpStatus status);
 
-	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String details, HttpStatus status);
+	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String detail, HttpStatus status);
+
+	ResponseEntity<ApiResponse<Object>> error(
+			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors);
 }

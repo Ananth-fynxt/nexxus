@@ -1,6 +1,8 @@
-package fynxt.common.http;
+package fynxt.common.exception;
 
 import fynxt.common.constants.ErrorCode;
+import fynxt.common.http.ApiResponse;
+import fynxt.common.http.ResponseBuilder;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,27 +19,19 @@ public class GlobalExceptionHandler {
 		this.responseBuilder = responseBuilder;
 	}
 
+	@ExceptionHandler(BaseException.class)
+	public ResponseEntity<ApiResponse<Object>> handleBaseException(BaseException ex) {
+		return responseBuilder.error(ex.errorCode(), ex.detail(), ex.httpStatus(), ex.errors());
+	}
+
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<ApiResponse<Object>> handleResponseStatus(ResponseStatusException ex) {
-		ErrorCode errorCode = resolveErrorCode(ex.getReason());
 		HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
-		return responseBuilder.error(errorCode, ex.getReason(), status);
+		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getReason(), status);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception ex) {
 		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-
-	protected ErrorCode resolveErrorCode(String code) {
-		if (code == null) {
-			return ErrorCode.GENERIC_ERROR;
-		}
-		for (ErrorCode errorCode : ErrorCode.values()) {
-			if (errorCode.getCode().equals(code)) {
-				return errorCode;
-			}
-		}
-		return ErrorCode.GENERIC_ERROR;
 	}
 }
