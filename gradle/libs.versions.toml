@@ -11,6 +11,7 @@ mapstruct = "1.6.3"
 hibernate = "7.0.3.Final"
 jobrunr = "7.4.1"
 jackson2 = "2.18.2"
+azure-communication-services = "1.0.0"
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
@@ -33,3 +34,4 @@ hibernate-envers = { module = "org.hibernate.orm:hibernate-envers", version.ref 
 jackson-databind = { module = "tools.jackson.core:jackson-databind" }
 jackson2-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson2" }
 jobrunr-spring-boot-starter = { module = "org.jobrunr:jobrunr-spring-boot-3-starter", version.ref = "jobrunr" }
+azure-communication-services-email = { group = "com.azure", name = "azure-communication-email", version.ref = "azure-communication-services" }
