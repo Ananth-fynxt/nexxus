@@ -15,3 +15,5 @@ include("libs:webhook")
 include("libs:email")
 
 include("libs:permission")
+
+include("libs:otel")
