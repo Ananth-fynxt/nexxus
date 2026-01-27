@@ -21,6 +21,17 @@ allprojects {
 
     repositories {
         mavenCentral()
+        maven {
+            url = uri("https://pkgs.dev.azure.com/tech4jc/_packaging/fynxt-libs/maven/v1")
+            name = "AzureArtifacts"
+            credentials {
+                username = findProperty("fynxt-libsUsername") as String?
+                password = findProperty("fynxt-libsPassword") as String?
+            }
+            authentication {
+                create("basic", org.gradle.authentication.http.BasicAuthentication::class.java)
+            }
+        }
     }
 
     spotless {

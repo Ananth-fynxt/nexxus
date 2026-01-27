@@ -55,6 +55,7 @@ tasks.register("applyMigration") {
                 .configure()
                 .dataSource(url, user, password)
                 .locations(locations)
+                .baselineOnMigrate(true)
                 .load()
                 .migrate()
 
