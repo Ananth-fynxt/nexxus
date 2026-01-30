@@ -4,11 +4,15 @@ import java.util.Objects;
 
 import javax.sql.DataSource;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
 import org.springframework.boot.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -28,12 +32,20 @@ public class CoreApplication {
 
 	@Bean
 	@Primary
-	@ConfigurationProperties(prefix = "spring.datasource")
-	public DataSource dataSource() {
-		return DataSourceBuilder.create().build();
+	public DataSource dataSource(DataSourceProperties properties) {
+		return properties.initializeDataSourceBuilder().build();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(ObjectMapper.class)
+	public ObjectMapper objectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.registerModule(new JavaTimeModule());
+		return mapper;
 	}
 
 	@Bean(name = "entityManagerFactory")
+	@DependsOn("flowSchemaBootstrap")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(
 			@Qualifier("dataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
 		return builder.dataSource(dataSource)

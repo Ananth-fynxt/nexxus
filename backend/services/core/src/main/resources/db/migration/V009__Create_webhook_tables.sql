@@ -40,9 +40,10 @@ CREATE TABLE webhook_logs (
     response_headers JSONB,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
+    deleted_at TIMESTAMP NULL,
     created_by INTEGER NOT NULL,
     updated_by INTEGER NOT NULL,
-    
+    deleted_by INTEGER NULL,
     CONSTRAINT fk_webhook_logs_webhook_id FOREIGN KEY (webhook_id) REFERENCES webhooks(id)
 );
 
