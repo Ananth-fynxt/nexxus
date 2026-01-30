@@ -20,7 +20,7 @@ allprojects {
     apply(plugin = "com.diffplug.spotless")
 
     repositories {
-        mavenLocal()
+        // mavenLocal()
         mavenCentral()
         maven {
             url = uri("https://pkgs.dev.azure.com/tech4jc/_packaging/fynxt-libs/maven/v1")

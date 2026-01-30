@@ -14,7 +14,7 @@ jackson2 = "2.18.2"
 azure-communication-services = "1.0.0"
 opentelemetry-logback-appender = "2.23.0-alpha"
 datasource-micrometer-spring-boot = "2.0.1"
-jwt-lib = "0.0.2-SNAPSHOT"
+jwt-lib = "1.0.0-SNAPSHOT"
 denovm-lib = "1.0.0-SNAPSHOT"
 flow-lib = "1.0.0-SNAPSHOT"
 
