@@ -13,6 +13,7 @@ dependencies {
     implementation(libs.flyway.core)
     implementation(libs.flyway.postgresql)
     implementation(libs.flow)
+    implementation(libs.denovm)
     implementation(libs.jackson2.databind)
     implementation(libs.jackson2.datatype.jsr310)
 }
