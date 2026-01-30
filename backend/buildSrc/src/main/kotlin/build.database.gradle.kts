@@ -49,13 +49,15 @@ tasks.register("applyMigration") {
 
         val locations = "filesystem:${migrationDir.asFile.absolutePath}"
 
-        // Default configuration: https://github.com/flyway/flyway/blob/9df387cfa998ad5e1024151374f226a6185fa78f/flyway-core/src/main/java/org/flywaydb/core/internal/configuration/models/FlywayModel.java#L45
+        // baselineVersion("0") ensures V001 and all migrations run when baselining an existing schema.
+        // Without it, default baselineVersion is 1, so Flyway skips V001 and only runs V002+.
         val flyway =
             Flyway
                 .configure()
                 .dataSource(url, user, password)
                 .locations(locations)
                 .baselineOnMigrate(true)
+                .baselineVersion("0")
                 .load()
                 .migrate()
 
