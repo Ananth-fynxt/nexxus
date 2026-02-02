@@ -7,6 +7,7 @@ plugins {
 dependencies {
     implementation(platform(libs.spring.boot.dependencies))
     implementation(libs.spring.boot.starter.webmvc)
+    implementation(libs.spring.boot.starter.aspectj)
     implementation(libs.spring.boot.starter.data.jpa)
     implementation(libs.spring.boot.starter.jdbc)
     implementation(libs.postgresql)
@@ -18,4 +19,9 @@ dependencies {
     implementation(libs.jackson2.databind)
     implementation(libs.jackson2.datatype.jsr310)
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
+
+    implementation(project(":libs:webhook"))
+    implementation(project(":libs:email"))
+    implementation(project(":libs:permission"))
+    implementation(project(":libs:database"))
 }

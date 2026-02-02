@@ -23,7 +23,15 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"fynxt.core", "fynxt.common"})
+@ComponentScan(
+		basePackages = {
+			"fynxt.core",
+			"fynxt.common",
+			"fynxt.webhook",
+			"fynxt.email",
+			"fynxt.permission",
+			"fynxt.database"
+		})
 @EnableTransactionManagement
 @EnableJpaRepositories(
 		basePackages = "fynxt.core",

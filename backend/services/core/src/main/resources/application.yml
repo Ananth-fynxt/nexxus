@@ -73,6 +73,21 @@ deno:
     pool-janitor-file-ttl-seconds: 300
     v8-max-old-space-mb: 32
 
+webhook:
+  enabled: ${WEBHOOK_ENABLED}
+  connect-timeout-ms: 5000
+  read-timeout-ms: 30000
+  max-retries: 3
+
+email:
+  enabled: ${EMAIL_ENABLED}
+  sender-address: ${EMAIL_SENDER_ADDRESS}
+  connection-string: ${EMAIL_CONNECTION_STRING}
+  thread-pool-size: 5
+
+permission:
+  enabled: ${PERMISSION_ENABLED}
+
 fynxt:
   jwt:
     enabled: true
