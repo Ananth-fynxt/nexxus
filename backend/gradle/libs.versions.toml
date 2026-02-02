@@ -17,6 +17,7 @@ datasource-micrometer-spring-boot = "2.0.1"
 jwt-lib = "1.0.0-SNAPSHOT"
 denovm-lib = "1.0.0-SNAPSHOT"
 flow-lib = "1.0.0-SNAPSHOT"
+springdoc = "2.8.4"
 
 [plugins]
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
@@ -51,3 +52,4 @@ azure-communication-services-email = { group = "com.azure", name = "azure-commun
 denovm = { group = "com.fynxt", name = "denovm", version.ref = "denovm-lib" }
 flow = { group = "com.fynxt", name = "lowcode-flow", version.ref = "flow-lib" }
 jwt = { group = "com.fynxt", name = "jwt", version.ref = "jwt-lib" }
+springdoc-openapi-starter-webmvc-ui = { group = "org.springdoc", name = "springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc" }

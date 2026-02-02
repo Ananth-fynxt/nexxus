@@ -27,7 +27,17 @@ spring:
 
 server:
   port: ${PORT:7111}
-  
+
+swagger:
+  enabled: ${SWAGGER_ENABLED}
+  title: Core Management System
+  server-urls: http://localhost:7111,${BACKEND_SERVER_URL}
+
+api:
+  prefix: ${API_PREFIX}
+  routes:
+    brand-env-paths: []
+
 logging:
   level:
     root: INFO
