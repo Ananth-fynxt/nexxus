@@ -42,6 +42,23 @@ logging:
   level:
     root: INFO
 
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: ${CONTAINERAPP_OTEL_TRACING_GRPC_ENDPOINT}
+          transport: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+    logging:
+      export:
+        otlp:
+          endpoint: ${CONTAINERAPP_OTEL_LOGGING_GRPC_ENDPOINT}
+          transport: ${OTEL_EXPORTER_OTLP_PROTOCOL}
+
 deno:
   vm:
     enabled: true
