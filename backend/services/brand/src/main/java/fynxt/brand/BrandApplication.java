@@ -1,4 +1,4 @@
-package fynxt.core;
+package fynxt.brand;
 
 import java.util.Objects;
 
@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @ComponentScan(
 		basePackages = {
-			"fynxt.core",
+			"fynxt.brand",
 			"fynxt.common",
 			"fynxt.webhook",
 			"fynxt.email",
@@ -34,10 +34,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		})
 @EnableTransactionManagement
 @EnableJpaRepositories(
-		basePackages = "fynxt.core",
+		basePackages = "fynxt.brand",
 		entityManagerFactoryRef = "entityManagerFactory",
 		transactionManagerRef = "transactionManager")
-public class CoreApplication {
+public class BrandApplication {
 
 	@Bean
 	@Primary
@@ -59,7 +59,7 @@ public class CoreApplication {
 			@Qualifier("dataSource") DataSource dataSource, EntityManagerFactoryBuilder builder) {
 		return builder.dataSource(dataSource)
 				.packages(
-						"fynxt.core", "fynxt.flowtype", "fynxt.flowaction", "fynxt.flowtarget", "fynxt.flowdefinition")
+						"fynxt.brand", "fynxt.flowtype", "fynxt.flowaction", "fynxt.flowtarget", "fynxt.flowdefinition")
 				.build();
 	}
 
@@ -71,6 +71,6 @@ public class CoreApplication {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(CoreApplication.class, args);
+		SpringApplication.run(BrandApplication.class, args);
 	}
 }

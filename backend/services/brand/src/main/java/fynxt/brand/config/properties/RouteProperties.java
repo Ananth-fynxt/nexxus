@@ -1,4 +1,4 @@
-package fynxt.core.config.properties;
+package fynxt.brand.config.properties;
 
 import java.util.List;
 

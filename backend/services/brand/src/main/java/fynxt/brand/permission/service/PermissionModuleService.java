@@ -1,4 +1,4 @@
-package fynxt.core.permission.service;
+package fynxt.brand.permission.service;
 
 import java.util.Map;
 

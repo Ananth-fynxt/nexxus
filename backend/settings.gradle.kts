@@ -1,6 +1,6 @@
 rootProject.name = "backend"
 
-include("services:core")
+include("services:brand")
 
 include("services:jobrunr")
 

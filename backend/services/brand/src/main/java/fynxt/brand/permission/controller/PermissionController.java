@@ -1,8 +1,8 @@
-package fynxt.core.permission.controller;
+package fynxt.brand.permission.controller;
 
+import fynxt.brand.permission.service.PermissionModuleService;
 import fynxt.common.http.ApiResponse;
 import fynxt.common.http.ResponseBuilder;
-import fynxt.core.permission.service.PermissionModuleService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

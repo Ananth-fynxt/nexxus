@@ -1,7 +1,7 @@
-package fynxt.core.permission.service.impl;
+package fynxt.brand.permission.service.impl;
 
+import fynxt.brand.permission.service.PermissionModuleService;
 import fynxt.common.constants.ErrorCode;
-import fynxt.core.permission.service.PermissionModuleService;
 
 import java.io.IOException;
 import java.io.InputStream;

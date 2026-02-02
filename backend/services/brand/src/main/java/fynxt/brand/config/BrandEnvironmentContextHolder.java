@@ -1,4 +1,4 @@
-package fynxt.core.config;
+package fynxt.brand.config;
 
 import fynxt.permission.context.PermissionContextHolder;
 

@@ -1,7 +1,7 @@
 spring:
   application:
-    name: core-service
-  
+    name: brand-service
+
   profiles:
     active: ${PROFILE}
 
@@ -30,7 +30,7 @@ server:
 
 swagger:
   enabled: ${SWAGGER_ENABLED}
-  title: Core Management System
+  title: Brand Management System
   server-urls: http://localhost:7111,${BACKEND_SERVER_URL}
 
 api:

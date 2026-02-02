@@ -1,7 +1,7 @@
-package fynxt.core.config;
+package fynxt.brand.config;
 
-import fynxt.core.config.properties.RouteProperties;
-import fynxt.core.config.properties.SwaggerProperties;
+import fynxt.brand.config.properties.RouteProperties;
+import fynxt.brand.config.properties.SwaggerProperties;
 
 import java.util.List;
 import java.util.Set;
