@@ -4,6 +4,11 @@ spring:
 
   profiles:
     active: ${PROFILE}
+    include: auth
+
+  config:
+    import:
+      - classpath:application-routes.yml
 
   datasource:
     url: ${DATABASE_URL}
@@ -89,6 +94,10 @@ permission:
   enabled: ${PERMISSION_ENABLED}
 
 fynxt:
+  auth:
+    api-prefix: ${API_PREFIX}
+    frontend-url: ${FRONTEND_URL}
+    admin-token: ${ADMIN_TOKEN}
   jwt:
     enabled: true
     issuer: ${JWT_ISSUER}

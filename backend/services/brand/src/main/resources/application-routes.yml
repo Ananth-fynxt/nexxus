@@ -1,0 +1,76 @@
+# Brand Service Route Configuration
+# This file defines authentication and authorization rules for different API routes
+
+fynxt:
+  auth:
+    route:
+      # Public paths that don't require authentication
+      public-paths:
+        - "/v3/api-docs/**"
+        - "/swagger-ui.html"
+        - "/swagger-ui/**"
+        - "/jobrunr/**"
+        - "/jobrunr-dashboard/**"
+        - "/nexxus/v1/health/**"
+        - "/nexxus/v1/auth/**"
+        - "/nexxus/v1/external/**"
+        - "/nexxus/v1/sessions/**"
+        - "/api-reference.html"
+        - "/api-reference/**"
+        - "/fynxt-flow-dashboard/**"
+        - "/dashboard-action/**"
+
+      # Paths that require X-BRAND-ID and X-ENV-ID headers (accessible by FI and BRAND scopes)
+      brand-env-paths:
+        - "/nexxus/v1/brand-roles/**"
+        - "/nexxus/v1/brand-users/**"
+        - "/nexxus/v1/permissions/**"
+        - "/nexxus/v1/psps/**"
+        - "/nexxus/v1/psp-groups/**"
+        - "/nexxus/v1/fees/**"
+        - "/nexxus/v1/transaction-limits/**"
+        - "/nexxus/v1/risk-rules/**"
+        - "/nexxus/v1/routing-rules/**"
+        - "/nexxus/v1/conversion-rates/**"
+        - "/nexxus/v1/requests/**"
+        - "/nexxus/v1/webhooks/**"
+
+      # Paths accessible by FI and BRAND scopes but don't require brand/env headers
+      no-brand-env-paths:
+        - "/nexxus/v1/brands/**"
+        - "/nexxus/v1/environments/**"
+        - "/nexxus/v1/transactions/**"
+
+      # Open for all origins
+      open-for-all-origins:
+        - "/nexxus/v1/brands/**"
+        - "/nexxus/v1/environments/**"
+        - "/nexxus/v1/flow-types/**"
+        - "/nexxus/v1/sessions/**"
+        - "/nexxus/v1/transactions/**"
+        - "/nexxus/v1/requests/**"
+        - "/nexxus/v1/external/**"
+        - "/fynxt-flow-dashboard/**"
+        - "/dashboard-action/**"
+
+      # Paths accessible by X-ADMIN-TOKEN
+      admin-token-paths:
+        - "/nexxus/v1/brands/**"
+        - "/nexxus/v1/environments/**"
+
+      # Paths accessible by X-SECRET-TOKEN
+      secret-token-paths:
+        - "/nexxus/v1/brands/**"
+        - "/nexxus/v1/environments/**"
+        - "/nexxus/v1/flow-types/**"
+        - "/nexxus/v1/flow-actions/**"
+        - "/nexxus/v1/flow-targets/**"
+        - "/nexxus/v1/flow-definitions/**"
+        - "/nexxus/v1/psps/**"
+        - "/nexxus/v1/fees/**"
+        - "/nexxus/v1/transaction-limits/**"
+        - "/nexxus/v1/risk-rules/**"
+        - "/nexxus/v1/routing-rules/**"
+        - "/nexxus/v1/requests/**"
+        - "/nexxus/v1/transactions/**"
+        - "/nexxus/v1/webhooks/**"
