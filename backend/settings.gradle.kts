@@ -4,6 +4,8 @@ include("services:brand")
 
 include("services:jobrunr")
 
+include("libs:auth")
+
 include("libs:common")
 
 include("libs:mapper")

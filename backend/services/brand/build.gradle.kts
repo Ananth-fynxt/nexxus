@@ -20,6 +20,7 @@ dependencies {
     implementation(libs.jackson2.datatype.jsr310)
     implementation(libs.springdoc.openapi.starter.webmvc.ui)
 
+    implementation(project(":libs:auth"))
     implementation(project(":libs:webhook"))
     implementation(project(":libs:email"))
     implementation(project(":libs:permission"))
