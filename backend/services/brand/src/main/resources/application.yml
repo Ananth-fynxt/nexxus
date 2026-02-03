@@ -26,12 +26,12 @@ spring:
     validate-on-migrate: true
 
 server:
-  port: ${PORT:7111}
+  port: ${PORT:8001}
 
 swagger:
   enabled: ${SWAGGER_ENABLED}
   title: Brand Management System
-  server-urls: http://localhost:7111,${BACKEND_SERVER_URL}
+  server-urls: http://localhost:8001,${BACKEND_SERVER_URL}
 
 api:
   prefix: ${API_PREFIX}

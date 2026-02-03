@@ -22,24 +22,8 @@ public class ApiResponse<T> {
 	private String code;
 	private String message;
 	private T data;
-	private ErrorDetails error;
+	private String error;
 	private ResponseMetadata metadata;
-
-	@Getter
-	@Builder
-	@NoArgsConstructor
-	@AllArgsConstructor
-	@JsonInclude(JsonInclude.Include.NON_NULL)
-	public static class ErrorDetails {
-
-		private String code;
-		private String message;
-		private String details;
-		private Object validationErrors;
-
-		@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
-		private OffsetDateTime timestamp;
-	}
 
 	@Getter
 	@Builder

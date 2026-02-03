@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("${api.prefix}/permissions")
 @RequiredArgsConstructor
 @Tag(name = "Permissions")
 public class PermissionController {
