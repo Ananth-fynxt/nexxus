@@ -74,7 +74,7 @@ public class EmailServiceImpl implements EmailService {
 
 		String senderAddress = request.getSenderAddress();
 		if (senderAddress == null || senderAddress.isEmpty()) {
-			senderAddress = emailProperties.getSenderAddress();
+			senderAddress = emailProperties.senderAddress();
 		}
 
 		return EmailRequest.builder()

@@ -31,15 +31,16 @@ spring:
     validate-on-migrate: true
 
 server:
-  port: ${PORT:7111}
+  port: ${PORT:8001}
 
 swagger:
   enabled: ${SWAGGER_ENABLED}
   title: Brand Management System
-  server-urls: http://localhost:7111,${BACKEND_SERVER_URL}
+  server-urls: http://localhost:8001,${BACKEND_SERVER_URL}
 
 api:
   prefix: ${API_PREFIX}
+  frontend-url: ${FRONTEND_URL}
   routes:
     brand-env-paths: []
 
@@ -80,18 +81,25 @@ deno:
 
 webhook:
   enabled: ${WEBHOOK_ENABLED}
-  connect-timeout-ms: 5000
-  read-timeout-ms: 30000
-  max-retries: 3
+  connect-timeout-ms: ${WEBHOOK_CONNECT_TIMEOUT_MS:5000}
+  read-timeout-ms: ${WEBHOOK_READ_TIMEOUT_MS:30000}
+  max-retries: ${WEBHOOK_MAX_RETRIES:3}
+  base-delay-seconds: ${WEBHOOK_BASE_DELAY_SECONDS:10}
+  max-retry-delay-seconds: ${WEBHOOK_MAX_RETRY_DELAY_SECONDS:3600}
+  retry-multiplier: ${WEBHOOK_RETRY_MULTIPLIER:2.0}
 
 email:
   enabled: ${EMAIL_ENABLED}
   sender-address: ${EMAIL_SENDER_ADDRESS}
   connection-string: ${EMAIL_CONNECTION_STRING}
-  thread-pool-size: 5
+  thread-pool-size: ${EMAIL_THREAD_POOL_SIZE:5}
 
 permission:
   enabled: ${PERMISSION_ENABLED}
+
+app:
+  crypto:
+    secret-key: ${CRYPTO_SECRET_KEY}
 
 fynxt:
   auth:

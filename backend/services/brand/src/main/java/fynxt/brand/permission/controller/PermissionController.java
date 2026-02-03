@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("${api.prefix}/permissions")
 @RequiredArgsConstructor
 @Tag(name = "Permissions")
 public class PermissionController {
@@ -24,6 +24,7 @@ public class PermissionController {
 	@GetMapping("/modules")
 	@Operation(summary = "Get all available permission modules")
 	public ResponseEntity<ApiResponse<Object>> getAvailableModules() {
-		return responseBuilder.success(permissionModuleService.getAvailableModules());
+		return responseBuilder.getAll(
+				permissionModuleService.getAvailableModules(), "Permission modules retrieved successfully");
 	}
 }

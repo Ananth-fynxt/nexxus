@@ -11,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 
 public interface ResponseBuilder {
 
-	ResponseEntity<ApiResponse<Object>> success(Object data, String message);
+	ResponseEntity<ApiResponse<Object>> created(Object data, String message);
 
-	ResponseEntity<ApiResponse<Object>> success(Object data);
+	ResponseEntity<ApiResponse<Object>> updated(Object data, String message);
 
-	ResponseEntity<ApiResponse<Object>> success(String message);
+	ResponseEntity<ApiResponse<Object>> get(Object data, String message);
+
+	ResponseEntity<ApiResponse<Object>> getAll(Object data, String message);
+
+	ResponseEntity<ApiResponse<Object>> deleted(String message);
 
 	<T> ResponseEntity<ApiResponse<Object>> paginated(Page<T> page, String message);
-
-	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, HttpStatus status);
-
-	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String detail, HttpStatus status);
 
 	ResponseEntity<ApiResponse<Object>> error(
 			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors);

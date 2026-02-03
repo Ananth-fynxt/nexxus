@@ -11,9 +11,9 @@ public class ExponentialBackoffRetryStrategy implements RetryStrategy {
 	private final long baseDelaySeconds;
 
 	public ExponentialBackoffRetryStrategy(WebhookProperties properties) {
-		this.maxRetryDelaySeconds = properties.getMaxRetryDelaySeconds();
-		this.retryMultiplier = properties.getRetryMultiplier();
-		this.baseDelaySeconds = properties.getBaseDelaySeconds();
+		this.maxRetryDelaySeconds = properties.maxRetryDelaySeconds();
+		this.retryMultiplier = properties.retryMultiplier();
+		this.baseDelaySeconds = properties.baseDelaySeconds();
 	}
 
 	@Override

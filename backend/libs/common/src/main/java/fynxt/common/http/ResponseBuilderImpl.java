@@ -18,23 +18,28 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 	private static final String SUCCESS_CODE = ErrorCode.SUCCESS.getCode();
 
 	@Override
-	public ResponseEntity<ApiResponse<Object>> success(Object data, String message) {
-		return ResponseEntity.ok(ApiResponse.builder()
-				.timestamp(now())
-				.code(SUCCESS_CODE)
-				.message(message)
-				.data(data)
-				.build());
+	public ResponseEntity<ApiResponse<Object>> created(Object data, String message) {
+		return buildSuccess(data, message, HttpStatus.CREATED);
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<Object>> success(Object data) {
-		return success(data, "Operation completed successfully");
+	public ResponseEntity<ApiResponse<Object>> updated(Object data, String message) {
+		return buildSuccess(data, message, HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<Object>> success(String message) {
-		return success(null, message);
+	public ResponseEntity<ApiResponse<Object>> get(Object data, String message) {
+		return buildSuccess(data, message, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ApiResponse<Object>> getAll(Object data, String message) {
+		return buildSuccess(data, message, HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ApiResponse<Object>> deleted(String message) {
+		return buildSuccess(null, message, HttpStatus.NO_CONTENT);
 	}
 
 	@Override
@@ -51,45 +56,40 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 		ApiResponse.ResponseMetadata metadata =
 				ApiResponse.ResponseMetadata.builder().pagination(pagination).build();
 
-		return ResponseEntity.ok(ApiResponse.builder()
-				.timestamp(now())
-				.code(SUCCESS_CODE)
-				.message(message)
-				.data(page.getContent())
-				.metadata(metadata)
-				.build());
-	}
-
-	@Override
-	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, HttpStatus status) {
-		return error(errorCode, null, status, null);
-	}
-
-	@Override
-	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String detail, HttpStatus status) {
-		return error(errorCode, detail, status, null);
+		return buildSuccess(page.getContent(), message, HttpStatus.OK, metadata);
 	}
 
 	@Override
 	public ResponseEntity<ApiResponse<Object>> error(
 			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors) {
-		OffsetDateTime timestamp = now();
+		String error = detail != null && !detail.isBlank() ? detail : errorCode.getMessage();
 		return ResponseEntity.status(status)
 				.body(ApiResponse.builder()
-						.timestamp(timestamp)
+						.timestamp(now())
 						.code(errorCode.getCode())
 						.message(errorCode.getMessage())
-						.error(ApiResponse.ErrorDetails.builder()
-								.code(errorCode.getCode())
-								.message(errorCode.getMessage())
-								.details(detail)
-								.validationErrors(errors != null && !errors.isEmpty() ? errors : null)
-								.timestamp(timestamp)
-								.build())
+						.error(error)
 						.build());
 	}
 
 	private OffsetDateTime now() {
 		return OffsetDateTime.now(ZoneOffset.UTC);
+	}
+
+	private ResponseEntity<ApiResponse<Object>> buildSuccess(Object data, String message, HttpStatus status) {
+		return buildSuccess(data, message, status, null);
+	}
+
+	private ResponseEntity<ApiResponse<Object>> buildSuccess(
+			Object data, String message, HttpStatus status, ApiResponse.ResponseMetadata metadata) {
+		ApiResponse.ApiResponseBuilder<Object> builder = ApiResponse.builder()
+				.timestamp(now())
+				.code(SUCCESS_CODE)
+				.message(message)
+				.data(data);
+		if (metadata != null) {
+			builder.metadata(metadata);
+		}
+		return ResponseEntity.status(status).body(builder.build());
 	}
 }

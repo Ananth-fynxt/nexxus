@@ -134,14 +134,14 @@ public class CustomEmailConfig {
     public EmailAsyncClient emailAsyncClient(EmailProperties properties) {
         // Custom Azure Communication Services client configuration
         return new EmailClientBuilder()
-            .connectionString(properties.getConnectionString())
+            .connectionString(properties.connectionString())
             .buildAsyncClient();
     }
 
     @Bean
     public ExecutorService emailExecutorService(EmailProperties properties) {
         // Custom thread pool configuration
-        return Executors.newFixedThreadPool(properties.getThreadPoolSize());
+        return Executors.newFixedThreadPool(properties.threadPoolSize());
     }
 }
 ```

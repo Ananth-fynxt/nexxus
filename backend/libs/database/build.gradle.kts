@@ -5,6 +5,6 @@ plugins {
 dependencies {
     api(libs.spring.boot.starter.data.jpa)
 
-    implementation(libs.hibernate.envers)
+    api(libs.hibernate.envers)
     implementation(libs.jackson.databind)
 }

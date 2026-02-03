@@ -30,14 +30,14 @@ public class EmailAutoConfiguration {
 	@ConditionalOnProperty(name = "email.connection-string")
 	public EmailAsyncClient emailAsyncClient(EmailProperties properties) {
 		return new EmailClientBuilder()
-				.connectionString(properties.getConnectionString())
+				.connectionString(properties.connectionString())
 				.buildAsyncClient();
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public ExecutorService emailExecutorService(EmailProperties properties) {
-		return Executors.newFixedThreadPool(properties.getThreadPoolSize());
+		return Executors.newFixedThreadPool(properties.threadPoolSize());
 	}
 
 	@Bean

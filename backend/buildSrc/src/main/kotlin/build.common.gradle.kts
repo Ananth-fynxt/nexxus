@@ -16,6 +16,7 @@ dependencies {
     compileOnly(libs.findLibrary("lombok").get())
 
     annotationProcessor(libs.findLibrary("lombok").get())
+    annotationProcessor(libs.findLibrary("mapstruct.processor").get())
 }
 
 java {
