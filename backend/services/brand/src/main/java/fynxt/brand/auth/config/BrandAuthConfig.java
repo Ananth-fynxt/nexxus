@@ -9,12 +9,8 @@ import fynxt.brand.auth.service.impl.TokenValidationServiceImpl;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "fynxt.brand.auth.repository")
-@EnableJpaAuditing
 public class BrandAuthConfig {
 
 	@Bean

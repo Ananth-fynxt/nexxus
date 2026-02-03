@@ -5,10 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
 
-@Configuration
 @ConfigurationProperties(prefix = "fynxt.auth.route")
 public record RouteConfig(
 		String[] publicPaths, String[] adminTokenPaths, String[] secretTokenPaths, String[] openForAllOriginsPaths) {

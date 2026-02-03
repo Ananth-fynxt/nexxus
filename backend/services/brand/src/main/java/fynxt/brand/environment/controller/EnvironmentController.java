@@ -18,7 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("${api.prefix}/environments")
+@RequestMapping("/environments")
 @RequiredArgsConstructor
 @Validated
 @RequiresScope({"FI", "BRAND", "EXTERNAL"})

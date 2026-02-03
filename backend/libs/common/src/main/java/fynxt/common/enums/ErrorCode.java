@@ -74,6 +74,18 @@ public enum ErrorCode {
 		return message;
 	}
 
+	public static ErrorCode fromCode(String code) {
+		if (code == null || code.isBlank()) {
+			return null;
+		}
+		for (ErrorCode errorCode : values()) {
+			if (errorCode.code.equals(code)) {
+				return errorCode;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return code;

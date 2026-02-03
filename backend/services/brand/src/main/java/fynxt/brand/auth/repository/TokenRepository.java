@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -38,6 +39,8 @@ public interface TokenRepository extends JpaRepository<Token, Long> {
 	@Query("SELECT t FROM Token t WHERE t.expiresAt < :now AND t.status = :status")
 	List<Token> findExpiredTokens(@Param("now") OffsetDateTime now, @Param("status") TokenStatus status);
 
-	@Query("DELETE FROM Token t WHERE t.expiresAt < :expirationDate AND t.status IN ('EXPIRED', 'REVOKED')")
-	void deleteExpiredTokens(@Param("expirationDate") OffsetDateTime expirationDate);
+	@Modifying
+	@Query("DELETE FROM Token t WHERE t.expiresAt < :expirationDate AND t.status IN :statuses")
+	void deleteExpiredTokens(
+			@Param("expirationDate") OffsetDateTime expirationDate, @Param("statuses") List<TokenStatus> statuses);
 }

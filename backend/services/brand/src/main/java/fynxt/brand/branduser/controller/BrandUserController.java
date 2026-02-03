@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("${api.prefix}/brand-users")
+@RequestMapping("/brand-users")
 @RequiredArgsConstructor
 @Validated
 @RequiresScope({"FI", "BRAND"})
