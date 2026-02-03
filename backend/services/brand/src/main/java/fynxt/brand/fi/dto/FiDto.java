@@ -1,7 +1,7 @@
 package fynxt.brand.fi.dto;
 
-import fynxt.brand.user.constants.UserStatus;
-import fynxt.common.constants.Scope;
+import fynxt.brand.user.enums.UserStatus;
+import fynxt.common.enums.Scope;
 
 import java.time.LocalDateTime;
 

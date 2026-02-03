@@ -1,7 +1,7 @@
 package fynxt.brand.fi.entity;
 
-import fynxt.brand.user.constants.UserStatus;
-import fynxt.common.constants.Scope;
+import fynxt.brand.user.enums.UserStatus;
+import fynxt.common.enums.Scope;
 import fynxt.database.audit.AuditingEntity;
 import fynxt.database.hibernate.PostgreSQLEnumType;
 
@@ -42,7 +42,7 @@ public class Fi extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @Parameter(name = "enumClass", value = "fynxt.common.constants.Scope"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Scope"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "scope", nullable = false, columnDefinition = "scope")
 	@Builder.Default
@@ -50,7 +50,7 @@ public class Fi extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.user.constants.UserStatus"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.user.enums.UserStatus"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, columnDefinition = "user_status")
 	@Builder.Default

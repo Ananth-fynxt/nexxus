@@ -1,11 +1,24 @@
 package fynxt.brand.auth.service.impl;
 
 import fynxt.auth.service.UserAuthenticationService;
-import fynxt.brand.auth.dto.UserInfo;
+import fynxt.brand.brand.dto.BrandDto;
+import fynxt.brand.brand.service.BrandService;
+import fynxt.brand.branduser.dto.BrandUserDto;
+import fynxt.brand.branduser.service.BrandUserService;
+import fynxt.brand.environment.dto.EnvironmentDto;
+import fynxt.brand.environment.service.EnvironmentService;
+import fynxt.brand.fi.dto.FiDto;
+import fynxt.brand.fi.service.FiService;
+import fynxt.brand.user.entity.User;
+import fynxt.brand.user.service.UserService;
+import fynxt.common.enums.ErrorCode;
+import fynxt.common.enums.Scope;
+import fynxt.common.util.CryptoUtil;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
@@ -17,142 +30,132 @@ import org.springframework.web.server.ResponseStatusException;
  * Implementation of UserAuthenticationService for the brand service.
  * This service handles user authentication and user info retrieval.
  *
- * Note: This is a placeholder implementation. You need to implement the actual
- * authentication logic based on your user, FI, brand, and environment services.
+ * Authentication implementation for the brand service.
  */
 @Service
 @RequiredArgsConstructor
-public class BrandUserAuthenticationService implements UserAuthenticationService {
+public class BrandUserAuthenticationServiceImpl implements UserAuthenticationService {
 
-	// TODO: Inject your actual service dependencies here
-	// private final UserService userService;
-	// private final FiService fiService;
-	// private final BrandService brandService;
-	// private final BrandUserService brandUserService;
-	// private final EnvironmentService environmentService;
-	// private final CryptoUtil cryptoUtil;
+	private final UserService userService;
+	private final FiService fiService;
+	private final BrandService brandService;
+	private final BrandUserService brandUserService;
+	private final EnvironmentService environmentService;
+	private final CryptoUtil cryptoUtil;
 
 	@Override
 	public Map<String, Object> authenticateUser(String email, String password) {
-		// TODO: Implement actual authentication logic
-		// Example implementation:
-		// 1. Find user by email
-		// 2. Validate password (decrypt and compare)
-		// 3. Build and return user info as Map
-
-		// UserInfo userInfo = buildUserInfo(user);
-		// return convertToMap(userInfo);
-
-		throw new ResponseStatusException(
-				HttpStatus.NOT_IMPLEMENTED,
-				"User authentication not implemented. Please implement this method with your user service.");
+		User user = userService.findByEmailForAuthentication(email);
+		validateUserPassword(user, password);
+		return buildUserInfo(user);
 	}
 
 	@Override
 	public Map<String, Object> getUserInfoById(Integer userId) {
-		// TODO: Implement actual user info retrieval logic
-		// Example implementation:
-		// 1. Find user by ID
-		// 2. Determine user scope (FI or BRAND)
-		// 3. Build and return UserInfo with brands/environments as Map
-
-		// UserInfo userInfo = buildUserInfo(user);
-		// return convertToMap(userInfo);
-
-		throw new ResponseStatusException(
-				HttpStatus.NOT_IMPLEMENTED,
-				"Get user info not implemented. Please implement this method with your user service.");
+		User user = userService.findByIdForAuthentication(userId);
+		return buildUserInfo(user);
 	}
 
-	// Helper method to convert UserInfo to Map
-	@SuppressWarnings("unused")
-	private Map<String, Object> convertToMap(UserInfo userInfo) {
+	private Map<String, Object> buildUserInfo(User user) {
+		try {
+			FiDto fiDto = fiService.findByUserId(user.getId());
+			return buildFiUserInfo(user, fiDto);
+		} catch (ResponseStatusException e) {
+			// Continue to brand user flow
+		}
+
+		List<BrandUserDto> brandUserDtos = brandUserService.findByUserId(user.getId());
+		if (!brandUserDtos.isEmpty()) {
+			return buildBrandUserInfo(user, brandUserDtos);
+		}
+
+		throw new ResponseStatusException(HttpStatus.FORBIDDEN, ErrorCode.USER_NO_ACCESS.getCode());
+	}
+
+	private Map<String, Object> buildFiUserInfo(User user, FiDto fiDto) {
+		List<BrandDto> brandDtos = brandService.findByFiId(fiDto.getId());
+		List<Map<String, Object>> brandInfos = buildBrandInfoList(brandDtos, null);
+
 		Map<String, Object> map = new HashMap<>();
-		map.put("userId", userInfo.getUserId());
-		map.put("email", userInfo.getEmail());
-		map.put("scope", userInfo.getScope());
-		map.put("status", userInfo.getStatus());
-		map.put("authType", userInfo.getAuthType());
-		if (userInfo.getFiId() != null) {
-			map.put("fiId", userInfo.getFiId());
+		map.put("userId", user.getId());
+		map.put("email", user.getEmail());
+		map.put("scope", Scope.FI.name());
+		map.put("status", fiDto.getStatus() != null ? fiDto.getStatus().name() : null);
+		map.put("authType", "INTERNAL");
+		map.put("fiId", fiDto.getId());
+		map.put("fiName", fiDto.getName());
+		map.put("brands", brandInfos);
+		return map;
+	}
+
+	private Map<String, Object> buildBrandUserInfo(User user, List<BrandUserDto> brandUserDtos) {
+		List<BrandDto> accessibleBrandDtos = brandService.findByUserId(user.getId());
+		List<Map<String, Object>> brandInfos = buildBrandInfoList(accessibleBrandDtos, brandUserDtos);
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", user.getId());
+		map.put("email", user.getEmail());
+		map.put("scope", Scope.BRAND.name());
+		map.put(
+				"status",
+				brandUserDtos.get(0).getStatus() != null
+						? brandUserDtos.get(0).getStatus().name()
+						: null);
+		map.put("authType", "INTERNAL");
+		map.put("accessibleBrands", brandInfos);
+		return map;
+	}
+
+	private List<Map<String, Object>> buildBrandInfoList(List<BrandDto> brandDtos, List<BrandUserDto> brandUserDtos) {
+		return brandDtos.stream()
+				.map(brandDto -> buildBrandInfo(brandDto, brandUserDtos))
+				.collect(Collectors.toList());
+	}
+
+	private Map<String, Object> buildBrandInfo(BrandDto brandDto, List<BrandUserDto> brandUserDtos) {
+		List<EnvironmentDto> environments = environmentService.findByBrandId(brandDto.getId());
+		List<Map<String, Object>> environmentInfos = environments.stream()
+				.map(env -> buildEnvironmentInfo(env, brandDto.getId(), brandUserDtos))
+				.collect(Collectors.toList());
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", brandDto.getId());
+		map.put("name", brandDto.getName());
+		map.put("environments", environmentInfos);
+		return map;
+	}
+
+	private Map<String, Object> buildEnvironmentInfo(
+			EnvironmentDto environment, UUID brandId, List<BrandUserDto> brandUserDtos) {
+		Integer roleId = null;
+
+		if (brandUserDtos != null) {
+			roleId = brandUserDtos.stream()
+					.filter(bu -> bu.getBrandId().equals(brandId)
+							&& bu.getEnvironmentId().equals(environment.getId()))
+					.map(BrandUserDto::getBrandRoleId)
+					.findFirst()
+					.orElse(null);
 		}
-		if (userInfo.getFiName() != null) {
-			map.put("fiName", userInfo.getFiName());
-		}
-		if (userInfo.getBrands() != null) {
-			map.put("brands", userInfo.getBrands());
-		}
-		if (userInfo.getAccessibleBrands() != null) {
-			map.put("accessibleBrands", userInfo.getAccessibleBrands());
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", environment.getId());
+		map.put("name", environment.getName());
+		if (roleId != null) {
+			map.put("roleId", roleId);
 		}
 		return map;
 	}
 
-	// Helper method to convert Map to UserInfo
-	@SuppressWarnings("unused")
-	private UserInfo convertToUserInfo(Map<String, Object> map) {
-		return UserInfo.builder()
-				.userId((Integer) map.get("userId"))
-				.email((String) map.get("email"))
-				.scope((UserInfo.Scope) map.get("scope"))
-				.status((UserInfo.UserStatus) map.get("status"))
-				.authType((fynxt.auth.enums.AuthType) map.get("authType"))
-				.fiId((Short) map.get("fiId"))
-				.fiName((String) map.get("fiName"))
-				.brands((List<UserInfo.BrandInfo>) map.get("brands"))
-				.accessibleBrands((List<UserInfo.BrandInfo>) map.get("accessibleBrands"))
-				.build();
-	}
-
-	/**
-	 * Example helper method to build UserInfo for FI-level users
-	 */
-	@SuppressWarnings("unused")
-	private UserInfo buildFiUserInfo(Object user, Object fiDto) {
-		// TODO: Implement based on your domain models
-		// List<BrandDto> brandDtos = brandService.findByFiId(fiDto.getId());
-		// List<UserInfo.BrandInfo> brandInfos = buildBrandInfoList(brandDtos, null);
-
-		return UserInfo.builder()
-				// .userId(user.getId())
-				// .email(user.getEmail())
-				.scope(Scope.FI)
-				// .status(fiDto.getStatus())
-				.authType("INTERNAL")
-				// .fiId(fiDto.getId())
-				// .fiName(fiDto.getName())
-				// .brands(brandInfos)
-				.build();
-	}
-
-	/**
-	 * Example helper method to build UserInfo for brand-level users
-	 */
-	@SuppressWarnings("unused")
-	private UserInfo buildBrandUserInfo(Object user, List<Object> brandUserDtos) {
-		// TODO: Implement based on your domain models
-		// List<BrandDto> accessibleBrandDtos = brandService.findByUserId(user.getId());
-		// List<UserInfo.BrandInfo> brandInfos = buildBrandInfoList(accessibleBrandDtos, brandUserDtos);
-
-		return UserInfo.builder()
-				// .userId(user.getId())
-				// .email(user.getEmail())
-				.scope(Scope.BRAND)
-				.status(UserStatus.ACTIVE)
-				.authType("INTERNAL")
-				// .accessibleBrands(brandInfos)
-				.build();
-	}
-
-	/**
-	 * Example helper method to build brand info list
-	 */
-	@SuppressWarnings("unused")
-	private List<UserInfo.BrandInfo> buildBrandInfoList(List<Object> brandDtos, List<Object> brandUserDtos) {
-		// TODO: Implement based on your domain models
-		return brandDtos.stream()
-				// .map(brandDto -> buildBrandInfo(brandDto, brandUserDtos))
-				.map(brandDto -> UserInfo.BrandInfo.builder().build())
-				.collect(Collectors.toList());
+	private void validateUserPassword(User user, String password) {
+		try {
+			String decryptedPassword = cryptoUtil.decrypt(user.getPassword());
+			if (!password.equals(decryptedPassword)) {
+				throw new ResponseStatusException(
+						HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
+			}
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
+		}
 	}
 }

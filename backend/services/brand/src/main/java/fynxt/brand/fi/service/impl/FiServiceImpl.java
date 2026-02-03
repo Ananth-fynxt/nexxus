@@ -7,7 +7,7 @@ import fynxt.brand.fi.service.FiService;
 import fynxt.brand.fi.service.mappers.FiMapper;
 import fynxt.brand.user.dto.UserRequest;
 import fynxt.brand.user.service.UserService;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.service.NameUniquenessService;
 
 import jakarta.transaction.Transactional;

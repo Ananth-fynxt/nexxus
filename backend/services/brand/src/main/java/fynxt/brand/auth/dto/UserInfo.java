@@ -1,6 +1,8 @@
 package fynxt.brand.auth.dto;
 
 import fynxt.auth.enums.AuthType;
+import fynxt.brand.user.enums.UserStatus;
+import fynxt.common.enums.Scope;
 
 import java.util.List;
 import java.util.UUID;
@@ -52,17 +54,5 @@ public class UserInfo {
 		private UUID id;
 		private String name;
 		private Integer roleId;
-	}
-
-	public enum Scope {
-		FI,
-		BRAND
-	}
-
-	public enum UserStatus {
-		ACTIVE,
-		INACTIVE,
-		INVITED,
-		SUSPENDED
 	}
 }

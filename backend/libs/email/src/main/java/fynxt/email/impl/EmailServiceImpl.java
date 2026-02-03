@@ -2,10 +2,10 @@ package fynxt.email.impl;
 
 import fynxt.email.EmailService;
 import fynxt.email.config.EmailProperties;
-import fynxt.email.constants.EmailExecutionStatus;
 import fynxt.email.dto.EmailRequest;
 import fynxt.email.dto.EmailResponse;
 import fynxt.email.dto.EmailTemplateContent;
+import fynxt.email.enums.EmailExecutionStatus;
 import fynxt.email.template.EmailTemplateService;
 
 import java.time.LocalDateTime;

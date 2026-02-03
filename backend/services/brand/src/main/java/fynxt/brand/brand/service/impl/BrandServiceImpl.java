@@ -8,7 +8,7 @@ import fynxt.brand.brand.service.mappers.BrandMapper;
 import fynxt.brand.environment.dto.EnvironmentDto;
 import fynxt.brand.environment.service.EnvironmentService;
 import fynxt.brand.fi.repository.FiRepository;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.service.NameUniquenessService;
 
 import java.util.List;

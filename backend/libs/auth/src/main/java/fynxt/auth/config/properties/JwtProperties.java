@@ -1,25 +1,14 @@
-package fynxt.auth.config;
+package fynxt.auth.config.properties;
 
 import java.time.Duration;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
-@Data
-@Component
 @ConfigurationProperties(prefix = "fynxt.jwt")
-public class JwtProperties {
-
-	private String issuer;
-
-	private String audience;
-
-	private String signingKeyId;
-
-	private String refreshSigningKeyId;
-
-	private Duration accessTokenExpiration;
-
-	private Duration refreshTokenExpiration;
-}
+public record JwtProperties(
+		String issuer,
+		String audience,
+		String signingKeyId,
+		String refreshSigningKeyId,
+		Duration accessTokenExpiration,
+		Duration refreshTokenExpiration) {}

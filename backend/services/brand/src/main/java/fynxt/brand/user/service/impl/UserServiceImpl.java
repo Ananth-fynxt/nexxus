@@ -8,7 +8,7 @@ import fynxt.brand.user.repository.UserRepository;
 import fynxt.brand.user.service.UserService;
 import fynxt.brand.user.service.mappers.UserMapper;
 import fynxt.brand.user.util.PasswordUtil;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.util.CryptoUtil;
 import fynxt.email.EmailService;
 import fynxt.email.dto.EmailRequest;

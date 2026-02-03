@@ -1,6 +1,6 @@
 package fynxt.common.http;
 
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.exception.ErrorDetail;
 
 import java.time.OffsetDateTime;

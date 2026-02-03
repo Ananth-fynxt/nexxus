@@ -8,7 +8,7 @@ import fynxt.brand.branduser.service.BrandUserService;
 import fynxt.brand.branduser.service.mappers.BrandUserMapper;
 import fynxt.brand.user.dto.UserRequest;
 import fynxt.brand.user.service.UserService;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.util.List;
 import java.util.UUID;

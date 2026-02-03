@@ -1,6 +1,6 @@
 package fynxt.common.exception;
 
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.util.List;
 

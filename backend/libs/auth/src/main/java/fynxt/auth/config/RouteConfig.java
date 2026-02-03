@@ -1,52 +1,30 @@
 package fynxt.auth.config;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.AntPathMatcher;
 
-@Data
 @Configuration
 @ConfigurationProperties(prefix = "fynxt.auth.route")
-public class RouteConfig {
+public record RouteConfig(
+		String[] publicPaths, String[] adminTokenPaths, String[] secretTokenPaths, String[] openForAllOriginsPaths) {
 
-	private final AntPathMatcher pathMatcher = new AntPathMatcher();
-
-	private String[] publicPaths = new String[0];
-
-	private String[] adminTokenPaths = new String[0];
-
-	private String[] secretTokenPaths = new String[0];
-
-	private String[] openForAllOriginsPaths = new String[0];
-
-	private Set<String> publicPathsSet;
-	private Set<String> adminTokenPathsSet;
-	private Set<String> secretTokenPathsSet;
+	private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
 	public boolean isPublic(String path) {
-		if (publicPathsSet == null) {
-			publicPathsSet = new HashSet<>(Arrays.asList(publicPaths));
-		}
-		return matchesAnyPattern(path, publicPathsSet);
+		return matchesAnyPattern(path, asSet(publicPaths));
 	}
 
 	public boolean isAdminTokenPath(String path) {
-		if (adminTokenPathsSet == null) {
-			adminTokenPathsSet = new HashSet<>(Arrays.asList(adminTokenPaths));
-		}
-		return matchesAnyPattern(path, adminTokenPathsSet);
+		return matchesAnyPattern(path, asSet(adminTokenPaths));
 	}
 
 	public boolean isSecretTokenPath(String path) {
-		if (secretTokenPathsSet == null) {
-			secretTokenPathsSet = new HashSet<>(Arrays.asList(secretTokenPaths));
-		}
-		return matchesAnyPattern(path, secretTokenPathsSet);
+		return matchesAnyPattern(path, asSet(secretTokenPaths));
 	}
 
 	public boolean isJwtRequired(String path) {
@@ -73,6 +51,13 @@ public class RouteConfig {
 		if (patterns == null || patterns.isEmpty()) {
 			return false;
 		}
-		return patterns.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
+		return patterns.stream().anyMatch(pattern -> PATH_MATCHER.match(pattern, path));
+	}
+
+	private Set<String> asSet(String[] values) {
+		if (values == null || values.length == 0) {
+			return Set.of();
+		}
+		return Arrays.stream(values).collect(Collectors.toSet());
 	}
 }

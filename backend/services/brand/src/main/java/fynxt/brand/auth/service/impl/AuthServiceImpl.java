@@ -1,14 +1,14 @@
 package fynxt.brand.auth.service.impl;
 
+import fynxt.auth.config.properties.JwtProperties;
 import fynxt.auth.dto.AuthResponse;
 import fynxt.auth.dto.LoginRequest;
 import fynxt.auth.enums.AuthType;
 import fynxt.auth.enums.TokenType;
 import fynxt.auth.service.TokenValidationService;
-import fynxt.brand.auth.dto.UserInfo;
 import fynxt.brand.auth.service.AuthService;
 import fynxt.brand.auth.service.TokenManagementService;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.jwt.dto.JwtTokenRequest;
 import fynxt.jwt.dto.JwtTokenResponse;
 import fynxt.jwt.dto.JwtValidationRequest;
@@ -17,13 +17,11 @@ import fynxt.jwt.exception.JwtSigningKeyException;
 import fynxt.jwt.exception.JwtTokenGenerationException;
 import fynxt.jwt.executor.JwtExecutor;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,30 +35,17 @@ public class AuthServiceImpl implements AuthService {
 	private final fynxt.auth.service.UserAuthenticationService userAuthService;
 	private final TokenValidationService tokenValidationService;
 	private final TokenManagementService tokenManagementService;
-
-	@Value("${fynxt.jwt.issuer}")
-	private String jwtIssuer;
-
-	@Value("${fynxt.jwt.audience}")
-	private String jwtAudience;
-
-	@Value("${fynxt.jwt.signing-key-id}")
-	private String signingKeyId;
-
-	@Value("${fynxt.jwt.refresh-signing-key-id}")
-	private String refreshSigningKeyId;
-
-	@Value("${fynxt.jwt.access-token-expiration}")
-	private Duration accessTokenExpiration;
-
-	@Value("${fynxt.jwt.refresh-token-expiration}")
-	private Duration refreshTokenExpiration;
+	private final JwtProperties jwtProperties;
 
 	@Transactional
 	public AuthResponse login(LoginRequest request) {
 
-		var user = userAuthService.authenticateUser(request.getEmail(), request.getPassword());
+		Map<String, Object> user = userAuthService.authenticateUser(request.getEmail(), request.getPassword());
 		if (user == null) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
+		}
+		Integer userId = extractUserId(user);
+		if (userId == null) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
 		}
 
@@ -68,9 +53,9 @@ public class AuthServiceImpl implements AuthService {
 			JwtTokenResponse accessTokenResponse = generateUserToken(user);
 			JwtTokenResponse refreshTokenResponse = generateUserRefreshToken(user);
 
-			tokenManagementService.cleanupExpiredTokensForUser(user.getUserId());
+			tokenManagementService.cleanupExpiredTokensForUser(userId);
 
-			tokenManagementService.saveTokens(accessTokenResponse, refreshTokenResponse, user.getUserId());
+			tokenManagementService.saveTokens(accessTokenResponse, refreshTokenResponse, userId);
 
 			return buildAuthResponse(accessTokenResponse, refreshTokenResponse.getToken());
 		} catch (JwtTokenGenerationException | JwtSigningKeyException e) {
@@ -112,66 +97,74 @@ public class AuthServiceImpl implements AuthService {
 		}
 	}
 
-	private JwtTokenResponse generateUserToken(UserInfo user) {
+	private JwtTokenResponse generateUserToken(Map<String, Object> user) {
+		Integer userId = extractUserId(user);
+		if (userId == null) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
+		}
 		Map<String, Object> claims = buildUserAccessTokenClaims(user);
 
 		JwtTokenRequest jwtRequest = JwtTokenRequest.builder()
-				.issuer(jwtIssuer)
-				.audience(jwtAudience)
-				.subject(user.getUserId().toString())
-				.expiresAt(OffsetDateTime.now().plus(accessTokenExpiration))
+				.issuer(jwtProperties.issuer())
+				.audience(jwtProperties.audience())
+				.subject(userId.toString())
+				.expiresAt(OffsetDateTime.now().plus(jwtProperties.accessTokenExpiration()))
 				.claims(claims)
-				.signingKeyId(signingKeyId)
+				.signingKeyId(jwtProperties.signingKeyId())
 				.tokenType(convertToExternalTokenType(TokenType.ACCESS))
 				.build();
 
 		return jwtExecutor.generateToken(jwtRequest);
 	}
 
-	private JwtTokenResponse generateUserRefreshToken(UserInfo user) {
+	private JwtTokenResponse generateUserRefreshToken(Map<String, Object> user) {
+		Integer userId = extractUserId(user);
+		if (userId == null) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.AUTH_INVALID_CREDENTIALS.getCode());
+		}
 		Map<String, Object> claims = buildUserRefreshTokenClaims(user);
 
 		JwtTokenRequest jwtRequest = JwtTokenRequest.builder()
-				.issuer(jwtIssuer)
-				.audience(jwtAudience)
-				.subject(user.getUserId().toString())
-				.expiresAt(OffsetDateTime.now().plus(refreshTokenExpiration))
+				.issuer(jwtProperties.issuer())
+				.audience(jwtProperties.audience())
+				.subject(userId.toString())
+				.expiresAt(OffsetDateTime.now().plus(jwtProperties.refreshTokenExpiration()))
 				.claims(claims)
-				.signingKeyId(refreshSigningKeyId)
+				.signingKeyId(jwtProperties.refreshSigningKeyId())
 				.tokenType(convertToExternalTokenType(TokenType.REFRESH))
 				.build();
 
 		return jwtExecutor.generateToken(jwtRequest);
 	}
 
-	private Map<String, Object> buildUserAccessTokenClaims(UserInfo user) {
+	private Map<String, Object> buildUserAccessTokenClaims(Map<String, Object> user) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("auth_type", AuthType.APPLICATION_USER.getValue());
-		claims.put("token_type", TokenType.ACCESS.getValue());
-		claims.put("scope", user.getScope().getValue());
-		claims.put("user_id", user.getUserId());
-		claims.put("email", user.getEmail());
-		if (user.getFiId() != null) {
-			claims.put("fi_id", user.getFiId());
+		claims.put("auth_type", AuthType.APPLICATION_USER.name());
+		claims.put("token_type", TokenType.ACCESS.name());
+		claims.put("scope", toStringValue(user.get("scope")));
+		claims.put("user_id", extractUserId(user));
+		claims.put("email", user.get("email"));
+		if (user.get("fiId") != null) {
+			claims.put("fi_id", user.get("fiId"));
 		}
-		if (user.getFiName() != null) {
-			claims.put("fi_name", user.getFiName());
+		if (user.get("fiName") != null) {
+			claims.put("fi_name", user.get("fiName"));
 		}
-		if (user.getBrands() != null) {
-			claims.put("brands", user.getBrands());
+		if (user.get("brands") != null) {
+			claims.put("brands", user.get("brands"));
 		}
-		if (user.getAccessibleBrands() != null) {
-			claims.put("accessible_brands", user.getAccessibleBrands());
+		if (user.get("accessibleBrands") != null) {
+			claims.put("accessible_brands", user.get("accessibleBrands"));
 		}
 		return claims;
 	}
 
-	private Map<String, Object> buildUserRefreshTokenClaims(UserInfo user) {
+	private Map<String, Object> buildUserRefreshTokenClaims(Map<String, Object> user) {
 		Map<String, Object> claims = new HashMap<>();
-		claims.put("auth_type", AuthType.APPLICATION_USER.getValue());
-		claims.put("token_type", TokenType.REFRESH.getValue());
-		claims.put("user_id", user.getUserId());
-		claims.put("scope", user.getScope().getValue());
+		claims.put("auth_type", AuthType.APPLICATION_USER.name());
+		claims.put("token_type", TokenType.REFRESH.name());
+		claims.put("user_id", extractUserId(user));
+		claims.put("scope", toStringValue(user.get("scope")));
 		return claims;
 	}
 
@@ -184,7 +177,7 @@ public class AuthServiceImpl implements AuthService {
 
 	private JwtTokenResponse generateAccessTokenFromRefreshToken(
 			String authType, JwtValidationResponse validationResult) {
-		if (AuthType.APPLICATION_USER.getValue().equals(authType)) {
+		if (AuthType.APPLICATION_USER.name().equals(authType)) {
 			return generateAccessTokenForApplicationUser(validationResult);
 		} else {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_VALIDATION_FAILED.getCode());
@@ -201,16 +194,16 @@ public class AuthServiceImpl implements AuthService {
 		} else {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_VALIDATION_FAILED.getCode());
 		}
-		UserInfo user = userAuthService.getUserInfoById(userId);
+		Map<String, Object> user = userAuthService.getUserInfoById(userId);
 		return generateUserToken(user);
 	}
 
 	private JwtValidationResponse validateRefreshToken(String refreshToken) {
 		JwtValidationRequest validationRequest = JwtValidationRequest.builder()
 				.token(refreshToken)
-				.issuer(jwtIssuer)
-				.audience(jwtAudience)
-				.signingKeyId(refreshSigningKeyId)
+				.issuer(jwtProperties.issuer())
+				.audience(jwtProperties.audience())
+				.signingKeyId(jwtProperties.refreshSigningKeyId())
 				.build();
 
 		JwtValidationResponse validationResult = jwtExecutor.validateToken(validationRequest);
@@ -219,7 +212,7 @@ public class AuthServiceImpl implements AuthService {
 		}
 
 		String tokenType = (String) validationResult.getClaims().get("token_type");
-		if (tokenType == null || !TokenType.REFRESH.getValue().equalsIgnoreCase(tokenType)) {
+		if (tokenType == null || !TokenType.REFRESH.name().equalsIgnoreCase(tokenType)) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ErrorCode.TOKEN_VALIDATION_FAILED.getCode());
 		}
 
@@ -234,9 +227,9 @@ public class AuthServiceImpl implements AuthService {
 	private String extractUserId(String token) {
 		JwtValidationRequest request = JwtValidationRequest.builder()
 				.token(token)
-				.issuer(jwtIssuer)
-				.audience(jwtAudience)
-				.signingKeyId(signingKeyId)
+				.issuer(jwtProperties.issuer())
+				.audience(jwtProperties.audience())
+				.signingKeyId(jwtProperties.signingKeyId())
 				.build();
 
 		JwtValidationResponse result = jwtExecutor.validateToken(request);
@@ -266,5 +259,33 @@ public class AuthServiceImpl implements AuthService {
 				.expiresAt(accessTokenResponse.getExpiresAt())
 				.claims(claims)
 				.build();
+	}
+
+	private Integer extractUserId(Map<String, Object> user) {
+		Object userIdObj = user.get("userId");
+		if (userIdObj instanceof Integer) {
+			return (Integer) userIdObj;
+		}
+		if (userIdObj instanceof Long) {
+			return ((Long) userIdObj).intValue();
+		}
+		if (userIdObj instanceof String) {
+			try {
+				return Integer.parseInt((String) userIdObj);
+			} catch (NumberFormatException e) {
+				return null;
+			}
+		}
+		return null;
+	}
+
+	private String toStringValue(Object value) {
+		if (value == null) {
+			return null;
+		}
+		if (value instanceof Enum<?>) {
+			return ((Enum<?>) value).name();
+		}
+		return String.valueOf(value);
 	}
 }

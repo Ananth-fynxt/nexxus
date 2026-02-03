@@ -1,9 +1,10 @@
 package fynxt.auth.strategy;
 
 import fynxt.auth.config.RouteConfig;
+import fynxt.auth.config.properties.AuthProperties;
 import fynxt.auth.filter.AuthenticationStrategy;
 import fynxt.auth.util.ErrorResponseUtil;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,6 +65,7 @@ public class AdminTokenAuthenticationStrategy implements AuthenticationStrategy 
 			return false;
 		}
 
+		String adminToken = authProperties.adminToken();
 		if (StringUtils.isBlank(adminToken) || !adminToken.equals(token)) {
 			ErrorResponseUtil.writeErrorResponse(request, response, ErrorCode.INVALID_TOKEN, HttpStatus.UNAUTHORIZED);
 			return false;

@@ -1,8 +1,8 @@
 package fynxt.brand.config;
 
+import fynxt.brand.auth.context.BrandEnvironmentContext;
 import fynxt.permission.context.PermissionContextHolder;
 
-import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -12,11 +12,13 @@ public class BrandEnvironmentContextHolder implements PermissionContextHolder {
 
 	@Override
 	public String getScope() {
-		return "EXTERNAL";
+		BrandEnvironmentContext context = fynxt.brand.auth.context.BrandEnvironmentContextHolder.getContext();
+		return context != null ? context.getScope() : null;
 	}
 
 	@Override
 	public Map<String, Object> getRolePermissions() {
-		return Collections.emptyMap();
+		BrandEnvironmentContext context = fynxt.brand.auth.context.BrandEnvironmentContextHolder.getContext();
+		return context != null ? context.getRolePermissions() : null;
 	}
 }

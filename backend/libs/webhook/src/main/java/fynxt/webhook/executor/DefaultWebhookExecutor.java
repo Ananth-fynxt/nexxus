@@ -1,8 +1,8 @@
 package fynxt.webhook.executor;
 
-import fynxt.webhook.constants.WebhookExecutionStatus;
 import fynxt.webhook.dto.WebhookRequest;
 import fynxt.webhook.dto.WebhookResponse;
+import fynxt.webhook.enums.WebhookExecutionStatus;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

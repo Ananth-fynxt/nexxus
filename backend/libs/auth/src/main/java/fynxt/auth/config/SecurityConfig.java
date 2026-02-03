@@ -1,5 +1,6 @@
 package fynxt.auth.config;
 
+import fynxt.auth.config.properties.AuthProperties;
 import fynxt.auth.filter.AccessTokenOncePerRequestFilter;
 import fynxt.auth.filter.AuthenticationStrategy;
 import fynxt.auth.filter.CorrelationIdWebFilter;
@@ -8,12 +9,12 @@ import fynxt.auth.filter.RawBodyCachingFilter;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.lang.NonNull;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -101,8 +102,9 @@ public class SecurityConfig {
 
 		// CORS configuration for secure internal APIs (restricted)
 		CorsConfiguration secureConfiguration = new CorsConfiguration();
+		String frontendUrl = authProperties.frontendUrl();
 		List<String> allowedOrigins =
-				Arrays.asList(authProperties.getFrontendUrl().split(","));
+				frontendUrl == null || frontendUrl.isBlank() ? List.of() : Arrays.asList(frontendUrl.split(","));
 		secureConfiguration.setAllowedOriginPatterns(allowedOrigins);
 		secureConfiguration.setAllowedMethods(Arrays.asList(getAllowedCorsMethods()));
 		secureConfiguration.addAllowedHeader("*");
@@ -128,10 +130,13 @@ public class SecurityConfig {
 	public WebMvcConfigurer webMvcConfigurer() {
 		return new WebMvcConfigurer() {
 			@Override
-			public void configurePathMatch(@NonNull PathMatchConfigurer configurer) {
-				configurer.addPathPrefix(
-						authProperties.getApiPrefix(),
-						c -> c.isAnnotationPresent(org.springframework.web.bind.annotation.RequestMapping.class));
+			public void configurePathMatch(PathMatchConfigurer configurer) {
+				String apiPrefix = authProperties != null ? authProperties.apiPrefix() : null;
+				if (StringUtils.isNotBlank(apiPrefix)) {
+					configurer.addPathPrefix(
+							apiPrefix,
+							c -> c.isAnnotationPresent(org.springframework.web.bind.annotation.RequestMapping.class));
+				}
 			}
 		};
 	}
