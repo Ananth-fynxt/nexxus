@@ -19,9 +19,17 @@ public enum ErrorCode {
 
 	BRAND_NOT_FOUND("1200", "Brand not found"),
 	BRAND_ALREADY_EXISTS("1201", "Brand already exists"),
+	BRAND_ROLE_NOT_FOUND("1202", "Brand role not found"),
+	BRAND_ROLE_ALREADY_EXISTS("1203", "Brand role already exists"),
+	BRAND_USER_NOT_FOUND("1204", "Brand user not found"),
+	BRAND_USER_ALREADY_EXISTS("1205", "Brand user already exists"),
 
 	ENVIRONMENT_NOT_FOUND("1300", "Environment not found"),
 	ENVIRONMENT_ALREADY_EXISTS("1301", "Environment already exists"),
+
+	FI_NOT_FOUND("1350", "Financial Institution not found"),
+	FI_ALREADY_EXISTS("1351", "Financial Institution already exists"),
+	FI_EMAIL_ALREADY_EXISTS("1352", "Financial Institution email already exists"),
 
 	PSP_NOT_FOUND("1400", "Payment service provider not found"),
 	PSP_STATUS_INVALID("1401", "PSP status is invalid"),

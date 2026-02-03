@@ -24,6 +24,7 @@ public class PermissionController {
 	@GetMapping("/modules")
 	@Operation(summary = "Get all available permission modules")
 	public ResponseEntity<ApiResponse<Object>> getAvailableModules() {
-		return responseBuilder.success(permissionModuleService.getAvailableModules());
+		return responseBuilder.getAll(
+				permissionModuleService.getAvailableModules(), "Permission modules retrieved successfully");
 	}
 }

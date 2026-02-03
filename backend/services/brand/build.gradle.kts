@@ -24,4 +24,5 @@ dependencies {
     implementation(project(":libs:email"))
     implementation(project(":libs:permission"))
     implementation(project(":libs:database"))
+    implementation(project(":libs:mapper"))
 }

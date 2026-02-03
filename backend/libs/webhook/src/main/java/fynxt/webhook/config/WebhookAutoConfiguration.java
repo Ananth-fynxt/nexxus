@@ -22,8 +22,8 @@ public class WebhookAutoConfiguration {
 	@ConditionalOnMissingBean(name = "webhookRestTemplate")
 	public RestTemplate webhookRestTemplate(WebhookProperties properties) {
 		SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-		factory.setConnectTimeout(properties.getConnectTimeoutMs());
-		factory.setReadTimeout(properties.getReadTimeoutMs());
+		factory.setConnectTimeout(properties.connectTimeoutMs());
+		factory.setReadTimeout(properties.readTimeoutMs());
 		return new RestTemplate(factory);
 	}
 
