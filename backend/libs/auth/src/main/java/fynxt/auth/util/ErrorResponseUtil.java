@@ -1,6 +1,6 @@
 package fynxt.auth.util;
 
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;

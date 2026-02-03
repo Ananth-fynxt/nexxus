@@ -1,11 +1,12 @@
 package fynxt.auth.strategy;
 
 import fynxt.auth.config.RouteConfig;
+import fynxt.auth.config.properties.JwtProperties;
 import fynxt.auth.enums.TokenType;
 import fynxt.auth.filter.AuthenticationStrategy;
 import fynxt.auth.service.TokenValidationService;
 import fynxt.auth.util.ErrorResponseUtil;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.jwt.dto.JwtValidationRequest;
 import fynxt.jwt.dto.JwtValidationResponse;
 import fynxt.jwt.executor.JwtExecutor;
@@ -94,11 +95,20 @@ public class JwtAuthenticationStrategy implements AuthenticationStrategy {
 		}
 
 		try {
+			if (jwtProperties == null
+					|| StringUtils.isBlank(jwtProperties.issuer())
+					|| StringUtils.isBlank(jwtProperties.audience())
+					|| StringUtils.isBlank(jwtProperties.signingKeyId())) {
+				ErrorResponseUtil.writeErrorResponse(
+						request, response, ErrorCode.AUTHENTICATION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
+				return false;
+			}
+
 			JwtValidationRequest validationRequest = JwtValidationRequest.builder()
 					.token(token)
-					.issuer(jwtIssuer)
-					.audience(jwtAudience)
-					.signingKeyId(signingKeyId)
+					.issuer(jwtProperties.issuer())
+					.audience(jwtProperties.audience())
+					.signingKeyId(jwtProperties.signingKeyId())
 					.build();
 
 			JwtValidationResponse validationResult = jwtExecutor.validateToken(validationRequest);
@@ -109,25 +119,37 @@ public class JwtAuthenticationStrategy implements AuthenticationStrategy {
 				return false;
 			}
 
-			String tokenType = (String) validationResult.getClaims().get("token_type");
-			if (tokenType == null || !TokenType.ACCESS.getValue().equalsIgnoreCase(tokenType)) {
+			Map<String, Object> claims = validationResult.getClaims();
+			if (claims == null) {
+				ErrorResponseUtil.writeErrorResponse(
+						request, response, ErrorCode.TOKEN_VALIDATION_FAILED, HttpStatus.UNAUTHORIZED);
+				return false;
+			}
+
+			String tokenType = (String) claims.get("token_type");
+			if (tokenType == null || !TokenType.ACCESS.name().equalsIgnoreCase(tokenType)) {
 				ErrorResponseUtil.writeErrorResponse(
 						request, response, ErrorCode.TOKEN_VALIDATION_FAILED, HttpStatus.UNAUTHORIZED);
 				return false;
 			}
 
 			String subject = validationResult.getSubject();
+			if (StringUtils.isBlank(subject)) {
+				ErrorResponseUtil.writeErrorResponse(
+						request, response, ErrorCode.TOKEN_VALIDATION_FAILED, HttpStatus.UNAUTHORIZED);
+				return false;
+			}
 			if (!isAccessTokenActiveInDatabase(token, subject)) {
 				ErrorResponseUtil.writeErrorResponse(
 						request, response, ErrorCode.TOKEN_VALIDATION_FAILED, HttpStatus.UNAUTHORIZED);
 				return false;
 			}
 
-			request.setAttribute("jwt.subject", validationResult.getSubject());
-			request.setAttribute("jwt.claims", validationResult.getClaims());
+			request.setAttribute("jwt.subject", subject);
+			request.setAttribute("jwt.claims", claims);
 			request.setAttribute("jwt.token", token);
 
-			setSpringSecurityContext(validationResult.getClaims(), validationResult.getSubject());
+			setSpringSecurityContext(claims, subject);
 
 			return true;
 		} catch (Exception e) {

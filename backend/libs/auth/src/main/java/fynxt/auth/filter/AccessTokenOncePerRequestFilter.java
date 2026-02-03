@@ -2,18 +2,18 @@ package fynxt.auth.filter;
 
 import fynxt.auth.config.RouteConfig;
 import fynxt.auth.util.ErrorResponseUtil;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.io.IOException;
 import java.util.List;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @RequiredArgsConstructor
@@ -24,9 +24,9 @@ public class AccessTokenOncePerRequestFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(
-			@NonNull HttpServletRequest request,
-			@NonNull HttpServletResponse response,
-			@NonNull FilterChain filterChain)
+			@Nonnull HttpServletRequest request,
+			@Nonnull HttpServletResponse response,
+			@Nonnull FilterChain filterChain)
 			throws ServletException, IOException {
 
 		String requestUri = request.getRequestURI();

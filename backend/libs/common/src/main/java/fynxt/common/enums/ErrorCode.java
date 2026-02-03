@@ -1,4 +1,4 @@
-package fynxt.common.constants;
+package fynxt.common.enums;
 
 public enum ErrorCode {
 	SUCCESS("0000", "Success"),
@@ -16,6 +16,9 @@ public enum ErrorCode {
 	AUTH_INVALID_CREDENTIALS("1100", "Invalid credentials"),
 	AUTH_INSUFFICIENT_PERMISSIONS("1101", "Insufficient permissions"),
 	AUTHENTICATION_REQUIRED("1102", "Authentication required"),
+	INVALID_TOKEN("1103", "Invalid token"),
+	SECRET_TOKEN_INVALID("1104", "Invalid secret token"),
+	AUTHENTICATION_FAILED("1105", "Authentication failed"),
 
 	BRAND_NOT_FOUND("1200", "Brand not found"),
 	BRAND_ALREADY_EXISTS("1201", "Brand already exists"),

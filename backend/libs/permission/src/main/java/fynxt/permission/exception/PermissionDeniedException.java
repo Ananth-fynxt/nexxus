@@ -1,6 +1,6 @@
 package fynxt.permission.exception;
 
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.exception.BaseException;
 import fynxt.common.exception.ErrorCategory;
 

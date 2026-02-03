@@ -4,7 +4,7 @@ import fynxt.auth.config.RouteConfig;
 import fynxt.auth.filter.AuthenticationStrategy;
 import fynxt.auth.service.EnvironmentLookupService;
 import fynxt.auth.util.ErrorResponseUtil;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.io.IOException;
 import java.util.List;

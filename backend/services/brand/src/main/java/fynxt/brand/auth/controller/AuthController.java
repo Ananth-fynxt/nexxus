@@ -23,41 +23,34 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @Validated
-@Tag(name = "Authentication", description = "Authentication endpoints for user login and token management")
+@Tag(name = "Authentication")
 public class AuthController {
 
 	private final AuthService authService;
 	private final ResponseBuilder responseBuilder;
 
 	@PostMapping("/login")
-	@Operation(summary = "User login", description = "Authenticate user with email and password")
-	public ResponseEntity<ApiResponse<AuthResponse>> login(
-			@Parameter(required = true, description = "Login credentials") @Validated @RequestBody
-					LoginRequest request) {
+	@Operation(summary = "User login")
+	public ResponseEntity<ApiResponse<Object>> login(
+			@Parameter(required = true) @Validated @RequestBody LoginRequest request) {
 		AuthResponse response = authService.login(request);
-		return responseBuilder.successResponse(response);
+		return responseBuilder.created(response, "Login successful");
 	}
 
 	@PostMapping("/token/refresh")
-	@Operation(summary = "Refresh access token", description = "Generate a new access token using refresh token")
-	public ResponseEntity<ApiResponse<AuthResponse>> refreshToken(
-			@Parameter(required = true, description = "Refresh token", example = "eyJhbGciOiJIUzI1NiJ9...")
-					@RequestParam
-					String refreshToken) {
+	@Operation(summary = "Refresh access token")
+	public ResponseEntity<ApiResponse<Object>> refreshToken(
+			@Parameter(required = true, example = "eyJhbGciOiJIUzI1NiJ9...") @RequestParam String refreshToken) {
 		AuthResponse response = authService.refreshToken(refreshToken);
-		return responseBuilder.successResponse(response);
+		return responseBuilder.created(response, "Token refreshed successfully");
 	}
 
 	@PostMapping("/logout")
-	@Operation(summary = "User logout", description = "Revoke all tokens for the authenticated user")
-	public ResponseEntity<ApiResponse<String>> logout(
-			@Parameter(
-							required = true,
-							description = "Authorization Bearer token",
-							example = "Bearer eyJhbGciOiJIUzI1NiJ9...")
-					@RequestHeader("Authorization")
+	@Operation(summary = "User logout")
+	public ResponseEntity<ApiResponse<Object>> logout(
+			@Parameter(required = true, example = "Bearer eyJhbGciOiJIUzI1NiJ9...") @RequestHeader("Authorization")
 					String authorization) {
 		String result = authService.logout(authorization);
-		return responseBuilder.successResponse(result);
+		return responseBuilder.deleted(result);
 	}
 }

@@ -6,7 +6,7 @@ import fynxt.brand.environment.entity.Environment;
 import fynxt.brand.environment.repository.EnvironmentRepository;
 import fynxt.brand.environment.service.EnvironmentService;
 import fynxt.brand.environment.service.mappers.EnvironmentMapper;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.util.List;
 import java.util.UUID;

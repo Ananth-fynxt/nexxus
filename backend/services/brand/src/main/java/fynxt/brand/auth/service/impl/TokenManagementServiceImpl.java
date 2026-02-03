@@ -5,7 +5,7 @@ import fynxt.auth.enums.TokenType;
 import fynxt.brand.auth.entity.Token;
 import fynxt.brand.auth.repository.TokenRepository;
 import fynxt.brand.auth.service.TokenManagementService;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 import fynxt.jwt.dto.JwtTokenResponse;
 
 import java.nio.charset.StandardCharsets;

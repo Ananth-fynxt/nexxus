@@ -5,7 +5,7 @@ import fynxt.brand.brandrole.entity.BrandRole;
 import fynxt.brand.brandrole.repository.BrandRoleRepository;
 import fynxt.brand.brandrole.service.BrandRoleService;
 import fynxt.brand.brandrole.service.mappers.BrandRoleMapper;
-import fynxt.common.constants.ErrorCode;
+import fynxt.common.enums.ErrorCode;
 
 import java.util.List;
 import java.util.Map;

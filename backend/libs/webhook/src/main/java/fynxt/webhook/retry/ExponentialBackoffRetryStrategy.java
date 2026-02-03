@@ -1,8 +1,8 @@
 package fynxt.webhook.retry;
 
 import fynxt.webhook.config.WebhookProperties;
-import fynxt.webhook.constants.WebhookExecutionStatus;
 import fynxt.webhook.dto.WebhookResponse;
+import fynxt.webhook.enums.WebhookExecutionStatus;
 
 public class ExponentialBackoffRetryStrategy implements RetryStrategy {
 

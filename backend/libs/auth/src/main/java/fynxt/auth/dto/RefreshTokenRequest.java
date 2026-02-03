@@ -14,6 +14,9 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Refresh token request")
 public class RefreshTokenRequest {
 
-	@NotBlank(message = "Refresh token is required") @Schema(description = "JWT refresh token", required = true, example = "eyJhbGciOiJIUzI1NiJ9...")
+	@NotBlank(message = "Refresh token is required") @Schema(
+			description = "JWT refresh token",
+			requiredMode = Schema.RequiredMode.REQUIRED,
+			example = "eyJhbGciOiJIUzI1NiJ9...")
 	private String refreshToken;
 }
