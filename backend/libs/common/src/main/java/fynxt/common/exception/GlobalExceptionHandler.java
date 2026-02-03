@@ -27,7 +27,10 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(ResponseStatusException.class)
 	public ResponseEntity<ApiResponse<Object>> handleResponseStatus(ResponseStatusException ex) {
 		HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
-		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getReason(), status, null);
+		ErrorCode resolved = ErrorCode.fromCode(ex.getReason());
+		ErrorCode errorCode = resolved != null ? resolved : ErrorCode.GENERIC_ERROR;
+		String detail = resolved != null ? null : ex.getReason();
+		return responseBuilder.error(errorCode, detail, status, null);
 	}
 
 	@ExceptionHandler(Exception.class)

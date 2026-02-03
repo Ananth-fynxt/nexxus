@@ -62,13 +62,11 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 	@Override
 	public ResponseEntity<ApiResponse<Object>> error(
 			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors) {
-		String error = detail != null && !detail.isBlank() ? detail : errorCode.getMessage();
 		return ResponseEntity.status(status)
 				.body(ApiResponse.builder()
 						.timestamp(now())
 						.code(errorCode.getCode())
 						.message(errorCode.getMessage())
-						.error(error)
 						.build());
 	}
 

@@ -4,10 +4,14 @@ import fynxt.common.enums.ErrorCode;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +24,7 @@ public class ErrorResponseUtil {
 
 	static {
 		objectMapper.registerModule(new JavaTimeModule());
+		objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
 
 	private ErrorResponseUtil() {}
@@ -32,26 +37,14 @@ public class ErrorResponseUtil {
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
 		Map<String, Object> errorResponse = new HashMap<>();
-		errorResponse.put("success", false);
-		errorResponse.put("error", createErrorDetails(errorCode, request));
-		errorResponse.put("timestamp", OffsetDateTime.now());
-		errorResponse.put("path", request.getRequestURI());
+		errorResponse.put("code", errorCode.getCode());
+		errorResponse.put("message", errorCode.getMessage());
+		String timestamp = OffsetDateTime.now(ZoneOffset.UTC)
+				.truncatedTo(ChronoUnit.SECONDS)
+				.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+		errorResponse.put("timestamp", timestamp);
 
 		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
 		response.getWriter().flush();
-	}
-
-	private static Map<String, Object> createErrorDetails(ErrorCode errorCode, HttpServletRequest request) {
-		Map<String, Object> errorDetails = new HashMap<>();
-		errorDetails.put("code", errorCode.getCode());
-		errorDetails.put("message", errorCode.getMessage());
-		errorDetails.put("category", "AUTHENTICATION");
-
-		String correlationId = request.getHeader("X-Correlation-ID");
-		if (correlationId != null) {
-			errorDetails.put("correlationId", correlationId);
-		}
-
-		return errorDetails;
 	}
 }
