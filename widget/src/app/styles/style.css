@@ -1,0 +1,291 @@
+
+
+
+/* Chakra UI theme integration - these CSS vars are managed by Chakra UI system */
+.chakra-reset {
+  box-sizing: border-box;
+}
+
+/* Allow Chakra UI to take precedence for color mode */
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+/* Base font styles for consistent rendering */
+#widget-root,
+:root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-display: swap;
+}
+
+/* Ensure widget root has base styles */
+#widget-root {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  /* Deep Blue */
+  --deep-blue-50: #f6f9ff;
+  --deep-blue-100: #ecf2ff;
+  --deep-blue-200: #dde9ff;
+  --deep-blue-300: #c6daff;
+  --deep-blue-400: #a7c6ff;
+  --deep-blue-500: #70a3ff;
+  --deep-blue-600: #528fff;
+  --deep-blue-700: #2d77ff;
+  --deep-blue-800: #1165ff;
+  --deep-blue-900: #0040b3;
+  --deep-blue-950: #002666; /* deep-blue-950-main */
+
+  /* Light Blue */
+  --light-blue-50: #fafdff;
+  --light-blue-100: #f0f9ff;
+  --light-blue-200: #e4f4fe;
+  --light-blue-300: #caeaff;
+  --light-blue-400: #b2e0ff;
+  --light-blue-500: #7acaff;
+  --light-blue-600: #51b9ff;
+  --light-blue-700: #0099ff; /* light-blue-700-main */
+  --light-blue-800: #0874c5;
+  --light-blue-900: #0d629b;
+  --light-blue-950: #0e3b5d;
+
+  /* Teal */
+  --teal-50: #ebfaf8;
+  --teal-100: #d3f4ee;
+  --teal-200: #a6e9de;
+  --teal-300: #72d6c9;
+  --teal-400: #4ab7aa;
+  --teal-500: #2ba197;
+  --teal-600: #20817b;
+  --teal-700: #1e6764;
+  --teal-800: #1c5350;
+  --teal-900: #1b4644;
+  --teal-950: #0a2929;
+
+  /* Lavender */
+  --lavender-50: #f4f3ff;
+  --lavender-100: #ebe8ff;
+  --lavender-200: #d8d5ff;
+  --lavender-300: #c4bdff;
+  --lavender-400: #9988fd;
+  --lavender-500: #7858fa;
+  --lavender-600: #6835f2;
+  --lavender-700: #5923de;
+  --lavender-800: #4a1dba;
+  --lavender-900: #3e1a98;
+  --lavender-950: #240e67;
+
+  /* Pink */
+  --pink-50: #fff1f5;
+  --pink-100: #ffe5ec;
+  --pink-200: #fecddd;
+  --pink-300: #fda4c0;
+  --pink-400: #fb71a0;
+  --pink-500: #f43f81;
+  --pink-600: #e11d6e;
+  --pink-700: #be125e;
+  --pink-800: #9f1255;
+  --pink-900: #88134e;
+  --pink-950: #4c0527;
+
+  /* Tangerine */
+  --tangerine-50: #fef6ee;
+  --tangerine-100: #feebd6;
+  --tangerine-200: #fcd4ac;
+  --tangerine-300: #f9b578;
+  --tangerine-400: #f58c42;
+  --tangerine-500: #f26c1d;
+  --tangerine-600: #e45212;
+  --tangerine-700: #bd3c11;
+  --tangerine-800: #963116;
+  --tangerine-900: #792b15;
+  --tangerine-950: #411309;
+
+  /* Success */
+  --success-50: #edfcf5;
+  --success-100: #d5f6e4;
+  --success-200: #aeecce;
+  --success-300: #79dcb3;
+  --success-400: #42c593;
+  --success-500: #1fac7b;
+  --success-600: #128962;
+  --success-700: #0e6e51;
+  --success-800: #0e5742;
+  --success-900: #0c4837;
+  --success-950: #06281f;
+
+  /* Warning */
+  --warning-50: #fdfae9;
+  --warning-100: #fcf5c5;
+  --warning-200: #fae88e;
+  --warning-300: #f7d54d;
+  --warning-400: #f4c430;
+  --warning-500: #e3a60f;
+  --warning-600: #c4800a;
+  --warning-700: #9c5b0c;
+  --warning-800: #814812;
+  --warning-900: #6e3b15;
+  --warning-950: #401e08;
+
+  /* Error */
+  --error-50: #fff3f1;
+  --error-100: #ffe5e1;
+  --error-200: #ffcfc7;
+  --error-300: #ffada0;
+  --error-400: #ff715b;
+  --error-500: #f8543b;
+  --error-600: #e5381d;
+  --error-700: #c12b14;
+  --error-800: #a02714;
+  --error-900: #842618;
+  --error-950: #481007;
+
+  /* Neutral Alphas and Tonals */
+  --nalpha-50: #ffffff; /* surface-lowest */
+  --nalpha-100: #f1f5f9;
+  --nalpha-200: #e2e8f0;
+  --nalpha-300: #cbd5e1;
+  --nalpha-400: #94a3b8;
+  --nalpha-500: #64748b;
+  --nalpha-600: #475569;
+  --nalpha-700: #334155;
+  --nalpha-800: #1e293b;
+  --nalpha-900: #0f172a;
+  --nalpha-950: #020617;
+
+  --aneutral-50: #fafafa;
+  --aneutral-200: #e5e5e5;
+  --aneutral-300: #dddddd;
+  --aneutral-400: #c8c8c8;
+  --aneutral-500: #858585;
+  --aneutral-600: #585858;
+  --aneutral-700: #404040;
+  --aneutral-800: #262626;
+  --aneutral-900: #171717;
+  --aneutral-950: #0a0a0a;
+
+  /* Semantic */
+  --primary-lightest: #fafdff;
+  --primary-lighter: #f0f9ff;
+  --primary-light: #caeaff;
+  --primary-base: #0099ff;
+  --primary-dark: #0874c5;
+  --primary-darkest: #0e3b5d;
+
+  --surface-lowest: #ffffff; /* neutral-tonal-50 */
+  --surface-low: #fafafa; /* neutral-gray-50 */
+  --surface-medium: #f5f5f5; /* neutral-gray-100 */
+  --surface-high: #e5e5e5; /* neutral-gray-200 */
+  --surface-highest: #dddddd; /* neutral-gray-300 */
+
+  --error-lightest: #fff3f1;
+  --error-light: #ffcfc7;
+  --error-base: #ff715b;
+  --error-dark: #e5381d;
+  --error-darkest: #a02714;
+
+  --success-lowest: #edfcf5;
+  --success-low: #d5f6e4;
+  --success-medium: #aeecce;
+  --success-high: #42c593;
+  --success-highest: #06281f;
+
+  /* Accent Groups */
+  --lavender-lightest: #f4f3ff;
+  --lavender-light: #d8d5ff;
+  --lavender-base: #6835f2;
+  --lavender-dark: #3e1a98;
+  --lavender-darkest: #240e67;
+
+  --pink-lightest: #fff1f5;
+  --pink-light: #fda4c0;
+  --pink-base: #f43f81;
+  --pink-dark: #9f1255;
+  --pink-darkest: #4c0527;
+
+  --tangerine-lightest: #fef6ee;
+  --tangerine-light: #fcd4ac;
+  --tangerine-base: #f58c42;
+  --tangerine-dark: #bd3c11;
+  --tangerine-darkest: #411309;
+
+  /* Accent 4 + Icons */
+  --teal-lightest: #ebfaf8;
+  --teal-light: #a6e9de;
+  --teal-base: #4ab7aa;
+  --teal-dark: #20817b;
+  --teal-darkest: #0a2929;
+
+  --grey-lowest: #ffffff; /* neutral-tonal-50 */
+  --grey-low: #c8c8c8; /* neutral-gray-400 */
+  --grey-medium: #858585; /* neutral-gray-500 */
+  --grey-high: #404040; /* neutral-gray-700 */
+  --grey-disabled: #e5e5e5; /* neutral-gray-200 */
+
+  --blue-lowest: #ffffff; /* neutral-tonal-50 */
+  --blue-low: #a7c6ff; /* brand-light-blue-400 */
+  --blue-medium: #0099ff; /* brand-light-blue-700-main */
+  --blue-high: #0874c5; /* brand-light-blue-800 */
+  --blue-disabled: #fafdff; /* brand-light-blue-50 */
+
+  /* Text + Icon Tokens */
+  --text-lowest: #ffffff; /* neutral-tonal-50 */
+  --text-low: #c8c8c8; /* neutral-gray-400 */
+  --text-medium: #858585; /* neutral-gray-500 */
+  --text-high: #404040; /* neutral-gray-700 */
+  --text-disabled-over-grey: #c8c8c8; /* neutral-gray-400 */
+  --text-disabled-over-white: #e5e5e5; /* neutral-gray-200 */
+
+  --icon-low: #c8c8c8; /* neutral-gray-400 */
+  --icon-medium: #0099ff; /* brand-light-blue-700-main */
+  --icon-high: #0874c5; /* brand-light-blue-800 */
+}
+
+/* Custom Scrollbar Styles */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 2px 0;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1; /* neutral-300 */
+  border-radius: 2px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8; /* neutral-400 */
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.custom-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox scrollbar styles */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
