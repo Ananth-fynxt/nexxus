@@ -3,6 +3,7 @@ package fynxt.mapper.util;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class CommonMappingUtil {
 
 	public String[] listToArray(List<String> list) {
@@ -41,5 +42,15 @@ public class CommonMappingUtil {
 
 	public Double floatToDouble(Float value) {
 		return value != null ? value.doubleValue() : null;
+	}
+
+	public String unquoteString(String value) {
+		if (value == null || value.length() < 2) {
+			return value;
+		}
+		if (value.startsWith("\"") && value.endsWith("\"")) {
+			return value.substring(1, value.length() - 1);
+		}
+		return value;
 	}
 }
