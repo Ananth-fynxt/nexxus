@@ -36,7 +36,7 @@ public class BrandDto {
 	@Schema(example = "2024-01-15T10:30:00", accessMode = Schema.AccessMode.READ_ONLY)
 	private LocalDateTime updatedAt;
 
-	@Email(message = "Invalid email Id") @Schema(example = "contact@nexxus.com")
+	@Email(message = "Invalid email Id") @Schema(example = "contact@fynxt.brand.com")
 	private String email;
 
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)

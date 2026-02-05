@@ -35,7 +35,7 @@ public class BrandUserDto {
 	@NotBlank(message = "Name is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "Jane Smith")
 	private String name;
 
-	@NotBlank(message = "Email is required") @Email(message = "Email should be valid") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "jane.smith@nexxus.com")
+	@NotBlank(message = "Email is required") @Email(message = "Email should be valid") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "jane.smith@fynxt.brand.com")
 	private String email;
 
 	@Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)

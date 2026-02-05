@@ -3,7 +3,7 @@ spring:
     name: brand-service
 
   profiles:
-    active: ${PROFILE}
+    active: ${PROFILE:dev}
     include: auth
 
   config:
@@ -36,13 +36,15 @@ server:
   port: ${PORT:8001}
 
 swagger:
-  enabled: ${SWAGGER_ENABLED}
+  enabled: true
   title: Brand Management System
   server-urls: http://localhost:8001,${BACKEND_SERVER_URL}
 
 api:
   prefix: ${API_PREFIX}
+  backend-server-url: ${BACKEND_SERVER_URL}
   frontend-url: ${FRONTEND_URL}
+  widget-url: ${WIDGET_URL}
   routes:
     brand-env-paths: []
 
@@ -81,8 +83,14 @@ deno:
     pool-janitor-file-ttl-seconds: 300
     v8-max-old-space-mb: 32
 
+jobrunr:
+  job-scheduler:
+    enabled: true
+  background-job-server:
+    enabled: true
+
 webhook:
-  enabled: ${WEBHOOK_ENABLED}
+  enabled: true
   connect-timeout-ms: ${WEBHOOK_CONNECT_TIMEOUT_MS:5000}
   read-timeout-ms: ${WEBHOOK_READ_TIMEOUT_MS:30000}
   max-retries: ${WEBHOOK_MAX_RETRIES:3}
@@ -91,13 +99,13 @@ webhook:
   retry-multiplier: ${WEBHOOK_RETRY_MULTIPLIER:2.0}
 
 email:
-  enabled: ${EMAIL_ENABLED}
+  enabled: true
   sender-address: ${EMAIL_SENDER_ADDRESS}
   connection-string: ${EMAIL_CONNECTION_STRING}
   thread-pool-size: ${EMAIL_THREAD_POOL_SIZE:5}
 
 permission:
-  enabled: ${PERMISSION_ENABLED}
+  enabled: true
 
 app:
   crypto:

@@ -3,7 +3,6 @@ package fynxt.mapper.util;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class CommonMappingUtil {
 
 	public String[] listToArray(List<String> list) {

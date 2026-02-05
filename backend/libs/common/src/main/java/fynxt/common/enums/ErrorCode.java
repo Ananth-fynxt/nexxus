@@ -12,6 +12,7 @@ public enum ErrorCode {
 	DUPLICATE_RESOURCE("1007", "Resource already exists"),
 	INVALID_CREDENTIALS("1008", "Invalid credentials"),
 	UNEXPECTED_ERROR("1009", "An unexpected error occurred. Please try again later."),
+	MISSING_REQUIRED_PARAMETER("1010", "Missing required parameter"),
 
 	AUTH_INVALID_CREDENTIALS("1100", "Invalid credentials"),
 	AUTH_INSUFFICIENT_PERMISSIONS("1101", "Insufficient permissions"),
@@ -56,7 +57,15 @@ public enum ErrorCode {
 	TRANSACTION_INVALID_STATUS("1705", "Invalid transaction status"),
 	TRANSACTION_INVALID_TRANSITION_STATUS("1706", "Invalid transaction transition status"),
 	TRANSACTION_REQUEST_ID_NOT_FOUND("1707", "Request Id is required"),
-	TRANSACTION_DUPLICATE("1708", "Duplicate transaction detected");
+	TRANSACTION_DUPLICATE("1708", "Duplicate transaction detected"),
+	TRANSACTION_AMOUNT_REQUIRED("1709", "Amount is required"),
+	TRANSACTION_AMOUNT_INVALID("1710", "Invalid transaction amount"),
+	TRANSACTION_FLOW_ACTION_ID_REQUIRED("1711", "Flow action ID is required"),
+	TRANSACTION_CURRENCY_REQUIRED("1712", "Currency is required"),
+	TRANSACTION_CURRENCY_INVALID("1713", "Invalid transaction currency"),
+	FLOW_DEFINITION_NOT_FOUND("1714", "Flow definition not found"),
+	FLOW_DEFINITION_CODE_REQUIRED("1715", "Flow definition code is required"),
+	INVALID_REQUEST_BODY("1716", "Invalid request body");
 
 	private final String code;
 	private final String message;

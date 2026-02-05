@@ -24,7 +24,7 @@ public class FiDto {
 	@NotBlank(message = "FI name is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "Nexxus Financial Group")
 	private String name;
 
-	@NotBlank(message = "FI email is required") @Email(message = "Invalid email format") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "contact@nexxus.com")
+	@NotBlank(message = "FI email is required") @Email(message = "Invalid email format") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "contact@fynxt.brand.com")
 	private String email;
 
 	@Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)

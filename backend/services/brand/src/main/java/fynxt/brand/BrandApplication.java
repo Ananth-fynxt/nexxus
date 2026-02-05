@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.jobrunr.storage.StorageProvider;
+import org.jobrunr.storage.sql.common.SqlStorageProviderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,7 +25,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@SpringBootApplication
+@SpringBootApplication(excludeName = {"org.jobrunr.spring.autoconfigure.storage.JobRunrSqlStorageAutoConfiguration"})
 @ConfigurationPropertiesScan(basePackages = {"fynxt.brand", "fynxt.common"})
 @ComponentScan(
 		basePackages = {
@@ -32,7 +34,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 			"fynxt.webhook",
 			"fynxt.email",
 			"fynxt.permission",
-			"fynxt.database"
+			"fynxt.database",
+			"fynxt.jobrunr"
 		})
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -45,6 +48,12 @@ public class BrandApplication {
 	@Primary
 	public DataSource dataSource(DataSourceProperties properties) {
 		return properties.initializeDataSourceBuilder().build();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean(StorageProvider.class)
+	public StorageProvider jobRunrStorageProvider(DataSource dataSource) {
+		return SqlStorageProviderFactory.using(dataSource);
 	}
 
 	@Bean

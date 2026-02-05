@@ -10,10 +10,20 @@ spring:
     username: ${DATABASE_USER}
     password: ${DATABASE_PASSWORD}
 
+  jpa:
+    open-in-view: false
+
 server:
   port: ${PORT:8000}
 
+management:
+  otlp:
+    metrics:
+      export:
+        enabled: false
+
 jobrunr:
+  standalone: true
   database:
     skip-create: false
     table-prefix: ""
@@ -47,4 +57,3 @@ jobrunr:
 logging:
   level:
     root: INFO
-    org.jobrunr: INFO

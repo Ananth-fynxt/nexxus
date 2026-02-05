@@ -30,13 +30,13 @@ public class EnvironmentDto {
 	@Schema(example = "550e8400-e29b-41d4-a716-446655440001", accessMode = Schema.AccessMode.READ_ONLY)
 	private UUID token;
 
-	@Schema(example = "https://app.nexxus.com")
+	@Schema(example = "https://app.fynxt.brand.com")
 	private String origin;
 
-	@Schema(example = "https://app.nexxus.com/success")
+	@Schema(example = "https://app.fynxt.brand.com/success")
 	private String successRedirectUrl;
 
-	@Schema(example = "https://app.nexxus.com/failure")
+	@Schema(example = "https://app.fynxt.brand.com/failure")
 	private String failureRedirectUrl;
 
 	@NotNull(message = "Brand ID is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")

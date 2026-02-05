@@ -14,6 +14,8 @@ include("libs:database")
 
 include("libs:webhook")
 
+include("libs:jobrunr")
+
 include("libs:email")
 
 include("libs:permission")

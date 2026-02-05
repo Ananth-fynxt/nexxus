@@ -143,7 +143,7 @@ public class UserServiceImpl implements UserService {
 			templateData.put("userEmail", userEmail);
 			templateData.put("password", password);
 			templateData.put("loginUrl", apiProperties.frontendUrl() + "/login");
-			templateData.put("supportEmail", "support@nexxus.fynxt.io");
+			templateData.put("supportEmail", "support@fynxt.brand.fynxt.io");
 			templateData.put("companyName", "Nexxus Platform");
 
 			EmailRequest emailRequest = EmailRequest.builder()

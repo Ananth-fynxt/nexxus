@@ -8,7 +8,7 @@ CREATE TABLE psps (
     block_vpn_access BOOLEAN DEFAULT FALSE,
     block_data_center_access BOOLEAN DEFAULT FALSE,
     failure_rate BOOLEAN DEFAULT FALSE,
-    failure_rate_threshold INTEGER DEFAULT 0,
+    failure_rate_threshold REAL DEFAULT 0,
     failure_rate_duration_minutes INTEGER DEFAULT 60,
     ip_address TEXT[],
     brand_id UUID NOT NULL REFERENCES brands(id),

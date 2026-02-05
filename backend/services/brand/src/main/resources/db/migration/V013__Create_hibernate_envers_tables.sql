@@ -35,7 +35,7 @@ CREATE TABLE psps_aud (
     environment_id UUID,
     flow_target_id TEXT,
     status status,
-    failure_rate_threshold INTEGER,
+    failure_rate_threshold REAL,
     failure_rate_duration_minutes INTEGER,
     created_at TIMESTAMP,
     updated_at TIMESTAMP,

@@ -8,6 +8,7 @@ public enum ErrorCategory {
 	UNAUTHORIZED(HttpStatus.UNAUTHORIZED),
 	FORBIDDEN(HttpStatus.FORBIDDEN),
 	CONFLICT(HttpStatus.CONFLICT),
+	DUPLICATE(HttpStatus.CONFLICT),
 	INTERNAL(HttpStatus.INTERNAL_SERVER_ERROR);
 
 	private final HttpStatus http;
