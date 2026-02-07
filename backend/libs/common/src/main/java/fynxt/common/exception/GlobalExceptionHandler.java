@@ -35,6 +35,6 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception ex) {
-		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+		return responseBuilder.error(ErrorCode.GENERIC_ERROR, null, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

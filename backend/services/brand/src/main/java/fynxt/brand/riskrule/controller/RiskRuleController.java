@@ -35,7 +35,14 @@ public class RiskRuleController {
 	@Operation(summary = "Create a new risk rule")
 	@RequiresPermission(module = "risk_rules", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody RiskRuleDto riskRuleDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		riskRuleDto.setBrandId(brandIdValue);
+		riskRuleDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(riskRuleService.create(riskRuleDto), "Created successfully");
 	}
 
@@ -82,8 +89,15 @@ public class RiskRuleController {
 	@Operation(summary = "Update an existing risk rule")
 	@RequiresPermission(module = "risk_rules", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true, example = "risk_rule_001") @PathVariable("id") @NotBlank String id,
 			@Parameter(required = true) @Validated @RequestBody RiskRuleDto riskRuleDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		riskRuleDto.setBrandId(brandIdValue);
+		riskRuleDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.updated(riskRuleService.update(Integer.parseInt(id), riskRuleDto), "Success");
 	}
 

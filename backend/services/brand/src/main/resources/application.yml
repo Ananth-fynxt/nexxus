@@ -43,7 +43,7 @@ swagger:
 api:
   prefix: ${API_PREFIX}
   backend-server-url: ${BACKEND_SERVER_URL}
-  frontend-url: ${FRONTEND_URL}
+  frontend-url: http://localhost:3000,http://localhost:5173,${FRONTEND_URL}
   widget-url: ${WIDGET_URL}
   routes:
     brand-env-paths: []
@@ -114,8 +114,8 @@ app:
 
 fynxt:
   auth:
-    api-prefix: ${API_PREFIX}
-    frontend-url: ${FRONTEND_URL}
+    api-prefix: ${api.prefix}
+    frontend-url: ${api.frontend-url}
     admin-token: ${ADMIN_TOKEN}
   jwt:
     enabled: true

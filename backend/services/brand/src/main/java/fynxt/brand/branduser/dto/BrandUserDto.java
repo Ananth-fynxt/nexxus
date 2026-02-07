@@ -18,15 +18,14 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema
 public class BrandUserDto {
 	@Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)
 	private Integer id;
 
-	@NotNull(message = "Brand ID is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
+	@Schema(example = "550e8400-e29b-41d4-a716-446655440000")
 	private UUID brandId;
 
-	@NotNull(message = "Environment ID is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "550e8400-e29b-41d4-a716-446655440000")
+	@Schema(example = "550e8400-e29b-41d4-a716-446655440000")
 	private UUID environmentId;
 
 	@NotNull(message = "Brand Role ID is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "1")

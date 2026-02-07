@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
@@ -38,7 +39,7 @@ public class PspOperation {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", nullable = false, columnDefinition = "status")
 	@Builder.Default

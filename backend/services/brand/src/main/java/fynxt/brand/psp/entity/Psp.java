@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 import org.hibernate.type.SqlTypes;
@@ -71,7 +72,7 @@ public class Psp extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "status")
 	@Builder.Default

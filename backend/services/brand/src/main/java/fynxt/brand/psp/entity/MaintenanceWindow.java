@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
@@ -48,7 +49,7 @@ public class MaintenanceWindow extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "status")
 	@Builder.Default

@@ -1,11 +1,12 @@
 package fynxt.brand.transaction.service;
 
-import fynxt.brand.transaction.config.TransactionFlowConfigurationProperties;
+import fynxt.brand.transaction.config.TransactionFlowCacheConfig;
 import fynxt.brand.transaction.enums.TransactionStatus;
 import fynxt.flowdefinition.entity.FlowDefinition;
 import fynxt.flowdefinition.repository.FlowDefinitionRepository;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,16 +29,13 @@ public class TransactionFlowConfigurationService {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private TransactionFlowConfigurationProperties properties;
-
 	private Cache<String, List<TransactionStatus>> nextStatusCache;
 
 	@PostConstruct
 	public void initializeCache() {
 		this.nextStatusCache = Caffeine.newBuilder()
-				.maximumSize(properties.getMaximumSize())
-				.expireAfterWrite(properties.getExpireAfterWrite())
+				.maximumSize(TransactionFlowCacheConfig.FLOW_CACHE_MAXIMUM_SIZE)
+				.expireAfterWrite(TransactionFlowCacheConfig.FLOW_CACHE_EXPIRE_AFTER_WRITE)
 				.recordStats()
 				.build();
 	}
@@ -107,7 +105,7 @@ public class TransactionFlowConfigurationService {
 	}
 
 	public Map<String, Object> getCacheStats() {
-		Map<String, Object> stats = new java.util.HashMap<>();
+		Map<String, Object> stats = new HashMap<>();
 		stats.put("cacheSize", nextStatusCache.estimatedSize());
 		stats.put("hitRate", nextStatusCache.stats().hitRate());
 		stats.put("missRate", nextStatusCache.stats().missRate());

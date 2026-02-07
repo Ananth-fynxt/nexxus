@@ -34,7 +34,11 @@ public class BrandUserController {
 	@Operation(summary = "Create a new brand user")
 	@RequiresPermission(module = "brand_users", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody @NotNull BrandUserDto dto) {
+		dto.setBrandId(brandId);
+		dto.setEnvironmentId(environmentId);
 		return responseBuilder.created(brandUserService.create(dto), "Brand user created successfully");
 	}
 
@@ -61,8 +65,12 @@ public class BrandUserController {
 	@Operation(summary = "Update an existing brand user")
 	@RequiresPermission(module = "brand_users", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true, example = "brand_user_001") @NotBlank @PathVariable String id,
 			@Parameter(required = true) @Validated @NotNull @RequestBody BrandUserDto brandUserDto) {
+		brandUserDto.setBrandId(brandId);
+		brandUserDto.setEnvironmentId(environmentId);
 		brandUserDto.setId(Integer.parseInt(id));
 		return responseBuilder.updated(brandUserService.update(brandUserDto), "Brand user updated successfully");
 	}

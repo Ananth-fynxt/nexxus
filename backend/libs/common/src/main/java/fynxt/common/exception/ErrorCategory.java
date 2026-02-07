@@ -3,21 +3,22 @@ package fynxt.common.exception;
 import org.springframework.http.HttpStatus;
 
 public enum ErrorCategory {
-	NOT_FOUND(HttpStatus.NOT_FOUND),
-	BAD_REQUEST(HttpStatus.BAD_REQUEST),
-	UNAUTHORIZED(HttpStatus.UNAUTHORIZED),
-	FORBIDDEN(HttpStatus.FORBIDDEN),
-	CONFLICT(HttpStatus.CONFLICT),
-	DUPLICATE(HttpStatus.CONFLICT),
-	INTERNAL(HttpStatus.INTERNAL_SERVER_ERROR);
-
-	private final HttpStatus http;
-
-	ErrorCategory(HttpStatus http) {
-		this.http = http;
-	}
+	NOT_FOUND,
+	BAD_REQUEST,
+	UNAUTHORIZED,
+	FORBIDDEN,
+	CONFLICT,
+	DUPLICATE,
+	INTERNAL;
 
 	public HttpStatus http() {
-		return http;
+		return switch (this) {
+			case NOT_FOUND -> HttpStatus.NOT_FOUND;
+			case BAD_REQUEST -> HttpStatus.BAD_REQUEST;
+			case UNAUTHORIZED -> HttpStatus.UNAUTHORIZED;
+			case FORBIDDEN -> HttpStatus.FORBIDDEN;
+			case CONFLICT, DUPLICATE -> HttpStatus.CONFLICT;
+			case INTERNAL -> HttpStatus.INTERNAL_SERVER_ERROR;
+		};
 	}
 }

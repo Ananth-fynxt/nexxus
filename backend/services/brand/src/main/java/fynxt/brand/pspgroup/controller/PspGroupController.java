@@ -33,7 +33,11 @@ public class PspGroupController {
 	@Operation(summary = "Create a new PSP group")
 	@RequiresPermission(module = "psp_groups", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody PspGroupDto pspGroupDto) {
+		pspGroupDto.setBrandId(brandId);
+		pspGroupDto.setEnvironmentId(environmentId);
 		return responseBuilder.created(pspGroupService.create(pspGroupDto), "Created successfully");
 	}
 
@@ -66,8 +70,12 @@ public class PspGroupController {
 	@Operation(summary = "Update an existing PSP group")
 	@RequiresPermission(module = "psp_groups", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true, example = "psp_group_001") @PathVariable("id") Integer id,
 			@Parameter(required = true) @Validated @RequestBody PspGroupDto pspGroupDto) {
+		pspGroupDto.setBrandId(brandId);
+		pspGroupDto.setEnvironmentId(environmentId);
 		pspGroupDto.setId(id);
 		return responseBuilder.updated(pspGroupService.update(id, pspGroupDto), "Success");
 	}

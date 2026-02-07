@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedBy;
@@ -61,10 +62,7 @@ public class Transaction {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.transaction.enums.TransactionStatus"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.transaction.enums.TransactionStatus"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "transaction_status")
 	private TransactionStatus status;

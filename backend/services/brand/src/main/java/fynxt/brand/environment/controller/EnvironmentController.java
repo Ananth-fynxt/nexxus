@@ -31,7 +31,9 @@ public class EnvironmentController {
 	@PostMapping
 	@Operation(summary = "Create a new environment")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
 			@Parameter(required = true) @Validated @RequestBody @NotNull EnvironmentDto environmentDto) {
+		environmentDto.setBrandId(brandId);
 		return responseBuilder.created(environmentService.create(environmentDto), "Environment created successfully");
 	}
 
@@ -51,8 +53,10 @@ public class EnvironmentController {
 	@PutMapping("/{id}")
 	@Operation(summary = "Update an existing environment")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
 			@Parameter(required = true, example = "550e8400-e29b-41d4-a716-446655440000") @PathVariable UUID id,
 			@Parameter(required = true) @Validated @NotNull @RequestBody EnvironmentDto environmentDto) {
+		environmentDto.setBrandId(brandId);
 		environmentDto.setId(id);
 		return responseBuilder.updated(environmentService.update(environmentDto), "Environment updated successfully");
 	}

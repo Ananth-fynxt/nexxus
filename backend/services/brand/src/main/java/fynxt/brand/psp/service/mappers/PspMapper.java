@@ -76,7 +76,7 @@ public interface PspMapper {
 	@Mapping(target = "countries", source = "dto.countries")
 	PspOperation toPspOperation(UpdatePspDto.PspOperationDto dto, UUID brandId, UUID environmentId, UUID pspId);
 
-	@org.mapstruct.Named("extractCurrencies")
+	@Named("extractCurrencies")
 	default List<String> extractCurrencies(List<UpdatePspDto.CurrencyDto> currencyDtos) {
 		if (currencyDtos == null) {
 			return List.of();
@@ -145,7 +145,7 @@ public interface PspMapper {
 	@Mapping(target = "flowActionName", source = "flowActionName")
 	PspDetailsDto.SupportedActionInfo toSupportedActionInfo(FlowTargetDto.SupportedActionInfo supportedActionInfo);
 
-	@org.mapstruct.Named("stringArrayToList")
+	@Named("stringArrayToList")
 	default List<String> stringArrayToList(String[] stringArray) {
 		if (stringArray == null) {
 			return List.of();
@@ -153,7 +153,7 @@ public interface PspMapper {
 		return List.of(stringArray);
 	}
 
-	@org.mapstruct.Named("stringToLocalDateTime")
+	@Named("stringToLocalDateTime")
 	default LocalDateTime stringToLocalDateTime(String dateTimeString) {
 		if (dateTimeString == null) {
 			return null;
@@ -161,7 +161,7 @@ public interface PspMapper {
 		return LocalDateTime.parse(dateTimeString);
 	}
 
-	@org.mapstruct.Named("extractFlowDefinitionId")
+	@Named("extractFlowDefinitionId")
 	default String extractFlowDefinitionId(PspOperation pspOperation) {
 		if (pspOperation == null) {
 			return null;

@@ -1,18 +1,18 @@
 package fynxt.brand.brandrole.entity;
 
 import fynxt.database.audit.AuditingEntity;
-import fynxt.database.converter.JsonNodeConverter;
 
 import java.util.UUID;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import tools.jackson.databind.JsonNode;
 
 @Entity
@@ -38,7 +38,7 @@ public class BrandRole extends AuditingEntity {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@Convert(converter = JsonNodeConverter.class)
-	@Column(name = "permission", columnDefinition = "jsonb")
+	@JdbcTypeCode(SqlTypes.JSON)
+	@Column(name = "permission", nullable = false, columnDefinition = "jsonb")
 	private JsonNode permission;
 }

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
@@ -40,30 +41,21 @@ public class RoutingRule extends AuditingEntity {
 	@Enumerated(EnumType.STRING)
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.routingrule.enums.PspSelectionMode"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.routingrule.enums.PspSelectionMode"))
 	@Column(name = "psp_selection_mode", columnDefinition = "psp_selection_mode")
 	private PspSelectionMode pspSelectionMode;
 
 	@Enumerated(EnumType.STRING)
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.routingrule.enums.RoutingType"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.routingrule.enums.RoutingType"))
 	@Column(name = "routing_type", columnDefinition = "routing_type")
 	private RoutingType routingType;
 
 	@Enumerated(EnumType.STRING)
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.routingrule.enums.RoutingDuration"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.routingrule.enums.RoutingDuration"))
 	@Column(name = "duration", columnDefinition = "routing_duration")
 	private RoutingDuration duration;
 
@@ -74,7 +66,7 @@ public class RoutingRule extends AuditingEntity {
 	@Enumerated(EnumType.STRING)
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Column(name = "status", columnDefinition = "status")
 	private Status status;
 }

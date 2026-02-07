@@ -20,8 +20,6 @@ public interface FeeComponentMapper {
 	FeeComponentDto toFeeComponentDto(FeeComponent feeComponent);
 
 	default EmbeddableFeeComponentId createEmbeddableFeeId(Integer feeId, Integer version) {
-		// Generate a unique ID for the fee component
-		String id = UUID.randomUUID().toString();
-		return new EmbeddableFeeComponentId(id, feeId, version);
+		return new EmbeddableFeeComponentId(UUID.randomUUID().toString(), feeId, version);
 	}
 }

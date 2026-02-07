@@ -16,7 +16,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema
 public class FiDto {
 	@Schema(example = "1", accessMode = Schema.AccessMode.READ_ONLY)
 	private Short id;

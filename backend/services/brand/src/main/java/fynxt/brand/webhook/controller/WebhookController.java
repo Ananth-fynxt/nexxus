@@ -34,7 +34,14 @@ public class WebhookController {
 	@Operation(summary = "Create a new webhook")
 	@RequiresPermission(module = "webhooks", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody WebhookDto webhookDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		webhookDto.setBrandId(brandIdValue);
+		webhookDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(webhookService.create(webhookDto), "Created successfully");
 	}
 
@@ -64,8 +71,15 @@ public class WebhookController {
 	@Operation(summary = "Update an existing webhook")
 	@RequiresPermission(module = "webhooks", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true, example = "webhook_001") @PathVariable("id") @NotBlank String id,
 			@Parameter(required = true) @Validated @RequestBody WebhookDto webhookDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		webhookDto.setBrandId(brandIdValue);
+		webhookDto.setEnvironmentId(environmentIdValue);
 		Short webhookId = Short.parseShort(id);
 		webhookDto.setId(webhookId);
 		return responseBuilder.updated(webhookService.update(webhookId, webhookDto), "Success");

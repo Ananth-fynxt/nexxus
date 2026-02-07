@@ -76,7 +76,7 @@ CREATE TABLE psp_group_psps (
     CONSTRAINT fk_psp_group_psps_psp FOREIGN KEY (psp_id) REFERENCES psps(id)
 );
 
-CREATE UNIQUE INDEX idx_psp_brand_env_flow_target_name ON psps(brand_id, environment_id, flow_target_id, name);
+CREATE UNIQUE INDEX idx_psp_brand_env_flow_target_name ON psps(brand_id, environment_id, flow_target_id, name) WHERE deleted_at IS NULL;
 CREATE INDEX idx_psp_brand_env ON psps(brand_id, environment_id);
 
 CREATE INDEX idx_psp_operations_psp_id ON psp_operations(psp_id);

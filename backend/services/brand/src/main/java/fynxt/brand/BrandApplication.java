@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 		basePackages = {
 			"fynxt.brand",
 			"fynxt.common",
+			"fynxt.mapper",
 			"fynxt.webhook",
 			"fynxt.email",
 			"fynxt.permission",

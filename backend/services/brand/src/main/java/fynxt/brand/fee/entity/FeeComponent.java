@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -23,10 +24,7 @@ public class FeeComponent {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.fee.enums.FeeComponentType"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.fee.enums.FeeComponentType"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "fee_component_type", columnDefinition = "fee_component_type")
 	private FeeComponentType type;

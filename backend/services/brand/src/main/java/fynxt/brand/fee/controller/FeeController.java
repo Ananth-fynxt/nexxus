@@ -34,7 +34,14 @@ public class FeeController {
 	@Operation(summary = "Create a new fee")
 	@RequiresPermission(module = "fees", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody FeeDto feeDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		feeDto.setBrandId(brandIdValue);
+		feeDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(feeService.create(feeDto), "Created successfully");
 	}
 
@@ -72,8 +79,15 @@ public class FeeController {
 	@Operation(summary = "Update an existing fee")
 	@RequiresPermission(module = "fees", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true, example = "fee_001") @PathVariable("id") @NotBlank String id,
 			@Parameter(required = true) @Validated @RequestBody FeeDto feeDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		feeDto.setBrandId(brandIdValue);
+		feeDto.setEnvironmentId(environmentIdValue);
 		Integer feeId = Integer.parseInt(id);
 		feeDto.setId(feeId);
 		return responseBuilder.updated(feeService.update(feeId, feeDto), "Success");

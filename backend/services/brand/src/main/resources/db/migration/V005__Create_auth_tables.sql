@@ -49,10 +49,10 @@ CREATE INDEX idx_tokens_customer_id ON tokens(customer_id);
 CREATE INDEX idx_users_email ON users(email);
 
 CREATE INDEX idx_brand_roles_brand_id ON brand_roles(brand_id, environment_id);
-CREATE UNIQUE INDEX idx_brand_roles_brand_name_permission ON brand_roles(brand_id, environment_id, name);
+CREATE UNIQUE INDEX idx_brand_roles_brand_name_permission ON brand_roles(brand_id, environment_id, name) WHERE deleted_at IS NULL;
 
 CREATE INDEX idx_brand_users_brand_id ON brand_users(brand_id, environment_id);
 CREATE INDEX idx_brand_users_email ON brand_users(email);
-CREATE UNIQUE INDEX idx_brand_users_brand_name_email ON brand_users(brand_id, environment_id, email);
+CREATE UNIQUE INDEX idx_brand_users_brand_name_email ON brand_users(brand_id, environment_id, email) WHERE deleted_at IS NULL;
 
 

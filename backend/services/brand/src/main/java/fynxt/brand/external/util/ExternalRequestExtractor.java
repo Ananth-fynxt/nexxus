@@ -2,6 +2,7 @@ package fynxt.brand.external.util;
 
 import fynxt.brand.transaction.entity.TransactionIdGenerator;
 
+import java.lang.reflect.Array;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
@@ -87,9 +88,9 @@ public class ExternalRequestExtractor {
 			}
 		}
 		if (obj.getClass().isArray()) {
-			int length = java.lang.reflect.Array.getLength(obj);
+			int length = Array.getLength(obj);
 			for (int i = 0; i < length; i++) {
-				String result = findValueByPrefix(java.lang.reflect.Array.get(obj, i), prefix);
+				String result = findValueByPrefix(Array.get(obj, i), prefix);
 				if (result != null) {
 					return result;
 				}

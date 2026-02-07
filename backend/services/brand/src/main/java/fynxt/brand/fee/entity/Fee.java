@@ -9,6 +9,7 @@ import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -34,10 +35,7 @@ public class Fee extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.fee.enums.ChargeFeeType"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.fee.enums.ChargeFeeType"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "charge_fee_type", columnDefinition = "charge_fee_type")
 	private ChargeFeeType chargeFeeType;
@@ -53,7 +51,7 @@ public class Fee extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "status")
 	@Builder.Default

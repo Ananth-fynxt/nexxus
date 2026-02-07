@@ -10,7 +10,6 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -48,16 +47,10 @@ public class PspDto {
 
 	private List<String> ipAddress;
 
-	@NotNull(message = "Brand ID is required") @Schema(
-			description = "Brand ID",
-			requiredMode = Schema.RequiredMode.REQUIRED,
-			example = "550e8400-e29b-41d4-a716-446655440000")
+	@Schema(example = "550e8400-e29b-41d4-a716-446655440000")
 	private UUID brandId;
 
-	@NotNull(message = "Environment ID is required") @Schema(
-			description = "Environment ID",
-			requiredMode = Schema.RequiredMode.REQUIRED,
-			example = "550e8400-e29b-41d4-a716-446655440000")
+	@Schema(example = "550e8400-e29b-41d4-a716-446655440000")
 	private UUID environmentId;
 
 	@NotBlank(message = "Flow target ID is required") private String flowTargetId;

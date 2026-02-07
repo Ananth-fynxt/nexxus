@@ -34,7 +34,14 @@ public class RoutingRuleController {
 	@Operation(summary = "Create a new routing rule")
 	@RequiresPermission(module = "routing_rules", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody RoutingRuleDto routingRuleDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		routingRuleDto.setBrandId(brandIdValue);
+		routingRuleDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(routingRuleService.create(routingRuleDto), "Created successfully");
 	}
 

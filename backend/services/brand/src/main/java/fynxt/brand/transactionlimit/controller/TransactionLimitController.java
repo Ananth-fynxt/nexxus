@@ -33,7 +33,14 @@ public class TransactionLimitController {
 	@Operation(summary = "Create a new transaction limit")
 	@RequiresPermission(module = "transaction_limits", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody TransactionLimitDto transactionLimitDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		transactionLimitDto.setBrandId(brandIdValue);
+		transactionLimitDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(transactionLimitService.create(transactionLimitDto), "Created successfully");
 	}
 
@@ -70,8 +77,15 @@ public class TransactionLimitController {
 	@Operation(summary = "Update an existing transaction limit")
 	@RequiresPermission(module = "transaction_limits", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true, example = "txn_limit_001") @PathVariable("id") Integer id,
 			@Parameter(required = true) @Validated @RequestBody TransactionLimitDto transactionLimitDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		transactionLimitDto.setBrandId(brandIdValue);
+		transactionLimitDto.setEnvironmentId(environmentIdValue);
 		transactionLimitDto.setId(id);
 		return responseBuilder.updated(transactionLimitService.update(id, transactionLimitDto), "Success");
 	}

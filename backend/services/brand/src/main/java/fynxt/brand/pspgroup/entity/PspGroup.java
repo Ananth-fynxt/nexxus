@@ -4,11 +4,13 @@ import fynxt.common.enums.Status;
 import fynxt.database.audit.AuditingEntity;
 import fynxt.database.hibernate.PostgreSQLEnumType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -40,7 +42,7 @@ public class PspGroup extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "status")
 	@Builder.Default
@@ -48,5 +50,5 @@ public class PspGroup extends AuditingEntity {
 
 	@OneToMany(mappedBy = "pspGroup", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@Builder.Default
-	private List<PspGroupPsp> pspGroupPsps = new java.util.ArrayList<>();
+	private List<PspGroupPsp> pspGroupPsps = new ArrayList<>();
 }

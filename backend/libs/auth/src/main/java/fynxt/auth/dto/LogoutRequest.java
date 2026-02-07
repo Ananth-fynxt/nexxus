@@ -11,12 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Logout request")
 public class LogoutRequest {
 
-	@NotBlank(message = "Authorization header is required") @Schema(
-			description = "Authorization Bearer token",
-			requiredMode = Schema.RequiredMode.REQUIRED,
-			example = "Bearer eyJhbGciOiJIUzI1NiJ9...")
+	@NotBlank(message = "Authorization header is required") @Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "Bearer eyJhbGciOiJIUzI1NiJ9...")
 	private String authorization;
 }

@@ -35,7 +35,14 @@ public class PspController {
 	@Operation(summary = "Create a new PSP")
 	@RequiresPermission(module = "psps", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody PspDto pspDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		pspDto.setBrandId(brandIdValue);
+		pspDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.created(pspService.create(pspDto), "Created successfully");
 	}
 
@@ -124,8 +131,15 @@ public class PspController {
 	@Operation(summary = "Update an existing PSP")
 	@RequiresPermission(module = "psps", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader(value = "X-BRAND-ID", required = false) UUID brandId,
+			@Parameter(hidden = true) @RequestHeader(value = "X-ENV-ID", required = false) UUID environmentId,
 			@Parameter(required = true, example = "psp_001") @Validated @PathVariable UUID pspId,
 			@Parameter(required = true) @Validated @RequestBody UpdatePspDto pspDto) {
+		UUID brandIdValue = brandId != null ? brandId : BrandEnvironmentContextHolder.getBrandId();
+		UUID environmentIdValue =
+				environmentId != null ? environmentId : BrandEnvironmentContextHolder.getEnvironmentId();
+		pspDto.setBrandId(brandIdValue);
+		pspDto.setEnvironmentId(environmentIdValue);
 		return responseBuilder.updated(pspService.update(pspId, pspDto), "Success");
 	}
 

@@ -23,6 +23,7 @@ import fynxt.flowaction.service.FlowActionService;
 import fynxt.flowdefinition.dto.FlowDefinitionDto;
 import fynxt.flowdefinition.service.FlowDefinitionService;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -165,7 +166,7 @@ public class VMExecuteImpl implements VMExecuteService {
 	}
 
 	private Map<String, String> convertJsonNodeToMap(JsonNode jsonNode) {
-		Map<String, String> credentials = new java.util.HashMap<>();
+		Map<String, String> credentials = new HashMap<>();
 
 		if (jsonNode != null && jsonNode.isObject()) {
 			jsonNode.fieldNames().forEachRemaining(fieldName -> {

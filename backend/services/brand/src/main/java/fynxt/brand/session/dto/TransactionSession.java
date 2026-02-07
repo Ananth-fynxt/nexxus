@@ -10,14 +10,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(
-		description =
-				"Response payload for transaction creation containing only the transaction id and VM execution response")
 public class TransactionSession {
 
-	@Schema(description = "Unique transaction identifier", example = "ortxlwzD0R7tUurZ")
+	@Schema(example = "ortxlwzD0R7tUurZ")
 	private String txnId;
 
-	@Schema(description = "Transaction data", example = "{\"data\": \"{}\"}")
+	@Schema(example = "{\"data\": \"{}\"}")
 	private Object txnData;
 }

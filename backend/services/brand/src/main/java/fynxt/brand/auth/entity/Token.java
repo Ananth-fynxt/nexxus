@@ -21,6 +21,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -57,8 +58,7 @@ public class Token {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.auth.enums.TokenStatus"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.auth.enums.TokenStatus"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "token_status")
 	@Builder.Default
@@ -66,7 +66,7 @@ public class Token {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.auth.enums.TokenType"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.auth.enums.TokenType"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "token_type", columnDefinition = "token_type")
 	private TokenType tokenType;

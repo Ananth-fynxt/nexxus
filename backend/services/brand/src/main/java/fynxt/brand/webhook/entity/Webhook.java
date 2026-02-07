@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
 @Entity
@@ -34,10 +35,7 @@ public class Webhook extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.webhook.enums.WebhookStatusType"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.webhook.enums.WebhookStatusType"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status_type", columnDefinition = "webhook_status_type")
 	private WebhookStatusType statusType;
@@ -57,7 +55,7 @@ public class Webhook extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters = @org.hibernate.annotations.Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.common.enums.Status"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "status", columnDefinition = "status")
 	@Builder.Default

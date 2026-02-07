@@ -1,4 +1,4 @@
-package fynxt.brand.config;
+package fynxt.mapper.config;
 
 import fynxt.mapper.json.JsonMapper;
 import fynxt.mapper.util.CommonMappingUtil;

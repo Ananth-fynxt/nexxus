@@ -14,8 +14,7 @@ CREATE TABLE webhooks (
     deleted_by INTEGER NULL,
 
     CONSTRAINT fk_webhooks_brand_id FOREIGN KEY (brand_id) REFERENCES brands(id),
-    CONSTRAINT fk_webhooks_environment_id FOREIGN KEY (environment_id) REFERENCES environments(id),
-    CONSTRAINT uq_webhook_brand_status UNIQUE (brand_id, environment_id, status_type)
+    CONSTRAINT fk_webhooks_environment_id FOREIGN KEY (environment_id) REFERENCES environments(id)
 );
 
 CREATE TABLE webhook_logs (
@@ -48,6 +47,7 @@ CREATE TABLE webhook_logs (
 );
 
 CREATE INDEX idx_webhooks_brand_id_environment_id ON webhooks(brand_id, environment_id);
+CREATE UNIQUE INDEX uq_webhook_brand_status ON webhooks (brand_id, environment_id, status_type) WHERE deleted_at IS NULL;
 CREATE INDEX idx_webhooks_status_type ON webhooks(status_type);
 CREATE INDEX idx_webhooks_status ON webhooks(status);
 

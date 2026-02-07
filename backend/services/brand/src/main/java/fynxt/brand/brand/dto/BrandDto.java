@@ -16,7 +16,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BrandDto {
 	@Schema(example = "550e8400-e29b-41d4-a716-446655440000", accessMode = Schema.AccessMode.READ_ONLY)

@@ -34,7 +34,11 @@ public class BrandRoleController {
 	@Operation(summary = "Create a new brand role")
 	@RequiresPermission(module = "brand_roles", action = "create")
 	public ResponseEntity<ApiResponse<Object>> create(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true) @Validated @RequestBody @NotNull BrandRoleDto brandRoleDto) {
+		brandRoleDto.setBrandId(brandId);
+		brandRoleDto.setEnvironmentId(environmentId);
 		return responseBuilder.created(brandRoleService.create(brandRoleDto), "Brand role created successfully");
 	}
 
@@ -61,8 +65,12 @@ public class BrandRoleController {
 	@Operation(summary = "Update an existing brand role")
 	@RequiresPermission(module = "brand_roles", action = "update")
 	public ResponseEntity<ApiResponse<Object>> update(
+			@Parameter(hidden = true) @RequestHeader("X-BRAND-ID") @NotNull UUID brandId,
+			@Parameter(hidden = true) @RequestHeader("X-ENV-ID") @NotNull UUID environmentId,
 			@Parameter(required = true, example = "brand_role_001") @NotBlank @PathVariable String id,
 			@Parameter(required = true) @Validated @NotNull @RequestBody BrandRoleDto brandRoleDto) {
+		brandRoleDto.setBrandId(brandId);
+		brandRoleDto.setEnvironmentId(environmentId);
 		brandRoleDto.setId(Integer.parseInt(id));
 		return responseBuilder.updated(brandRoleService.update(brandRoleDto), "Brand role updated successfully");
 	}

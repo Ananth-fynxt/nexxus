@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.SqlTypes;
 
@@ -62,10 +63,7 @@ public class WebhookLog extends AuditingEntity {
 
 	@Type(
 			value = PostgreSQLEnumType.class,
-			parameters =
-					@org.hibernate.annotations.Parameter(
-							name = "enumClass",
-							value = "fynxt.brand.webhook.enums.WebhookExecutionStatus"))
+			parameters = @Parameter(name = "enumClass", value = "fynxt.brand.webhook.enums.WebhookExecutionStatus"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "execution_status", columnDefinition = "webhook_execution_status")
 	@Builder.Default

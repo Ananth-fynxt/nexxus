@@ -10,23 +10,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(
-		description =
-				"Response payload for transaction creation containing only the transaction id and VM execution response")
 public class TransactionResponseDto {
 
-	@Schema(description = "Unique transaction identifier", example = "ortxlwzD0R7tUurZ")
+	@Schema(example = "ortxlwzD0R7tUurZ")
 	private String txnId;
 
-	@Schema(description = "Transaction success", example = "true")
+	@Schema(example = "true")
 	private Boolean txnSuccess;
 
-	@Schema(description = "Transaction meta", example = "{\"http\": \"{}\", \"logs\": {}}")
+	@Schema(example = "{\"http\": \"{}\", \"logs\": {}}")
 	private Object txnMeta;
 
-	@Schema(description = "Transaction error", example = "ERR_INVALID_PAYMENT_METHOD")
+	@Schema(example = "ERR_INVALID_PAYMENT_METHOD")
 	private String txnError;
 
-	@Schema(description = "Session URL for the transaction", example = "https://pay.sticpay.com/...")
+	@Schema(example = "https://pay.sticpay.com/...")
 	private String sessionUrl;
 }
