@@ -1,6 +1,5 @@
 package fynxt.brand.transactionlimit.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.psp.service.PspService;
 import fynxt.brand.transactionlimit.dto.TransactionLimitDto;
 import fynxt.brand.transactionlimit.dto.TransactionLimitPspActionDto;
@@ -13,6 +12,7 @@ import fynxt.brand.transactionlimit.repository.TransactionLimitRepository;
 import fynxt.brand.transactionlimit.service.TransactionLimitService;
 import fynxt.brand.transactionlimit.service.mappers.TransactionLimitMapper;
 import fynxt.brand.transactionlimit.service.mappers.TransactionLimitPspActionMapper;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.enums.Status;
 import fynxt.flowaction.service.FlowActionService;
 import fynxt.shared.dto.IdNameDto;

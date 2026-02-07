@@ -1,10 +1,10 @@
 package fynxt.brand.psp.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.psp.entity.PspOperation;
 import fynxt.brand.psp.repository.PspOperationRepository;
 import fynxt.brand.psp.service.PspOperationsService;
 import fynxt.brand.psp.service.mappers.PspMapper;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.enums.Status;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package fynxt.brand.shared.util;
+package fynxt.brand.external.util;
 
 import java.io.BufferedReader;
 import java.nio.charset.StandardCharsets;

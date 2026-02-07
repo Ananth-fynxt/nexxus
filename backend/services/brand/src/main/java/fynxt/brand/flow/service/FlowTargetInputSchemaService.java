@@ -1,6 +1,4 @@
-package fynxt.brand.shared.service;
-
-import fynxt.brand.shared.dto.ValidationResult;
+package fynxt.brand.flow.service;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ public interface FlowTargetInputSchemaService {
 
 	boolean validateCurrency(String currency, Object inputSchema);
 
-	ValidationResult validateCurrencies(List<String> currencies, Object inputSchema);
+	void validateCurrencies(List<String> currencies, Object inputSchema);
 
-	ValidationResult validateCountries(List<String> countries, Object inputSchema);
+	void validateCountries(List<String> countries, Object inputSchema);
 }

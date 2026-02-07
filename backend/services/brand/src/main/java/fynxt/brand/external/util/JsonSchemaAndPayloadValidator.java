@@ -1,4 +1,8 @@
-package fynxt.brand.shared.validators;
+package fynxt.brand.external.util;
+
+import fynxt.common.enums.ErrorCode;
+import fynxt.common.exception.AppException;
+import fynxt.common.exception.ErrorCategory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +28,15 @@ public class JsonSchemaAndPayloadValidator {
 		this.schemaFactory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V7);
 	}
 
-	public ValidationResult validate(String schemaJson, String payload) {
+	public void validateAndThrow(String schemaJson, String payload) throws AppException {
+		List<String> errors = collectValidationErrors(schemaJson, payload);
+		if (!errors.isEmpty()) {
+			String message = "Schema validation failed: " + String.join("; ", errors);
+			throw new AppException(message, ErrorCode.VALIDATION_ERROR, ErrorCategory.BAD_REQUEST);
+		}
+	}
+
+	private List<String> collectValidationErrors(String schemaJson, String payload) {
 		try {
 			JsonNode schemaNode = objectMapper.readTree(schemaJson);
 			JsonNode payloadNode = objectMapper.readTree(payload);
@@ -33,25 +45,17 @@ public class JsonSchemaAndPayloadValidator {
 			Set<ValidationMessage> validationMessages = schema.validate(payloadNode);
 
 			if (validationMessages.isEmpty()) {
-				return ValidationResult.success();
-			} else {
-				List<String> errors = new ArrayList<>();
-				for (ValidationMessage message : validationMessages) {
-					errors.add(message.getMessage());
-				}
-				return ValidationResult.failure(errors);
+				return List.of();
 			}
+			List<String> errors = new ArrayList<>();
+			for (ValidationMessage message : validationMessages) {
+				errors.add(message.getMessage());
+			}
+			return errors;
 		} catch (IOException e) {
-			return ValidationResult.failure(List.of("Invalid JSON format: " + e.getMessage()));
+			return List.of("Invalid JSON format: " + e.getMessage());
 		} catch (Exception e) {
-			return ValidationResult.failure(List.of("Invalid JSON schema: " + e.getMessage()));
-		}
-	}
-
-	public void validateAndThrow(String schemaJson, String payload) throws SchemaValidationException {
-		ValidationResult result = validate(schemaJson, payload);
-		if (!result.valid()) {
-			throw new SchemaValidationException("Schema validation failed", result.errors());
+			return List.of("Invalid JSON schema: " + e.getMessage());
 		}
 	}
 }

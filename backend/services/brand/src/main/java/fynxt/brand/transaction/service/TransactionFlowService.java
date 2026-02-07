@@ -1,5 +1,6 @@
 package fynxt.brand.transaction.service;
 
+import fynxt.brand.config.properties.ApiProperties;
 import fynxt.brand.psp.entity.Psp;
 import fynxt.brand.psp.service.PspService;
 import fynxt.brand.session.service.SessionService;
@@ -16,20 +17,17 @@ import java.util.UUID;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class TransactionFlowService {
+	private final ApiProperties apiProperties;
 	private final TransactionOrchestrator orchestrator;
 	private final TransactionMapper transactionMapper;
 	private final PspService pspService;
 	private final SessionService sessionService;
-
-	@Value("${api.widget-url}")
-	private String widgetUrl;
 
 	public TransactionDto createTransaction(TransactionDto transactionDto) {
 		TransactionExecutionContext resultContext = orchestrator.createTransaction(transactionDto);
@@ -80,7 +78,7 @@ public class TransactionFlowService {
 						createdTransaction.getVersion(),
 						pspTimeoutSeconds);
 
-				transactionCreateResponseDto.setSessionUrl(widgetUrl + "/" + sessionToken);
+				transactionCreateResponseDto.setSessionUrl(apiProperties.widgetUrl() + "/" + sessionToken);
 			} catch (Exception e) {
 				log.error(
 						"TxnId: {} \nVersion: {} \nError: {}",

@@ -1,11 +1,9 @@
 package fynxt.common.http;
 
 import fynxt.common.enums.ErrorCode;
-import fynxt.common.exception.ErrorDetail;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -60,13 +58,14 @@ public class ResponseBuilderImpl implements ResponseBuilder {
 	}
 
 	@Override
-	public ResponseEntity<ApiResponse<Object>> error(
-			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors) {
+	public ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String messageOverride, HttpStatus status) {
+		String message =
+				messageOverride != null && !messageOverride.isBlank() ? messageOverride : errorCode.getMessage();
 		return ResponseEntity.status(status)
 				.body(ApiResponse.builder()
 						.timestamp(now())
 						.code(errorCode.getCode())
-						.message(errorCode.getMessage())
+						.message(message)
 						.build());
 	}
 

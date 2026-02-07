@@ -6,4 +6,8 @@ import org.springframework.validation.annotation.Validated;
 
 @Validated
 @ConfigurationProperties(prefix = "api")
-public record ApiProperties(@NotBlank String frontendUrl) {}
+public record ApiProperties(
+		@NotBlank String prefix,
+		@NotBlank String backendServerUrl,
+		@NotBlank String frontendUrl,
+		@NotBlank String widgetUrl) {}

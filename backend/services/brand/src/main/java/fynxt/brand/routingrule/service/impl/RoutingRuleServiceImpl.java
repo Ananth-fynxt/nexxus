@@ -1,6 +1,5 @@
 package fynxt.brand.routingrule.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.psp.service.PspService;
 import fynxt.brand.routingrule.dto.RoutingRuleDto;
 import fynxt.brand.routingrule.dto.RoutingRulePspDto;
@@ -11,6 +10,7 @@ import fynxt.brand.routingrule.repository.RoutingRulePspRepository;
 import fynxt.brand.routingrule.repository.RoutingRuleRepository;
 import fynxt.brand.routingrule.service.RoutingRuleService;
 import fynxt.brand.routingrule.service.mappers.RoutingRuleMapper;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.service.NameUniquenessService;
 import fynxt.shared.dto.IdNameDto;
 

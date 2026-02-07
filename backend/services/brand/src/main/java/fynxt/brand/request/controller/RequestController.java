@@ -8,7 +8,6 @@ import fynxt.common.http.ApiResponse;
 import fynxt.common.http.ResponseBuilder;
 import fynxt.permission.annotations.RequiresScope;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -44,8 +43,7 @@ public class RequestController {
 			return responseBuilder.error(
 					ErrorCode.MISSING_REQUIRED_PARAMETER,
 					"Brand ID and Environment ID must be provided via authentication context",
-					HttpStatus.BAD_REQUEST,
-					Collections.emptyList());
+					HttpStatus.BAD_REQUEST);
 		}
 
 		requestInputDto.setBrandId(brandId);

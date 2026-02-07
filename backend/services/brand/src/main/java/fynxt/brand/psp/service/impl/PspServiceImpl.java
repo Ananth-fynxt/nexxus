@@ -1,6 +1,6 @@
 package fynxt.brand.psp.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
+import fynxt.brand.flow.service.FlowTargetInputSchemaService;
 import fynxt.brand.psp.dto.*;
 import fynxt.brand.psp.entity.MaintenanceWindow;
 import fynxt.brand.psp.entity.Psp;
@@ -10,7 +10,7 @@ import fynxt.brand.psp.repository.PspOperationRepository;
 import fynxt.brand.psp.repository.PspRepository;
 import fynxt.brand.psp.service.PspService;
 import fynxt.brand.psp.service.mappers.PspMapper;
-import fynxt.brand.shared.service.FlowTargetInputSchemaService;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.enums.Status;
 import fynxt.common.service.NameUniquenessService;
 import fynxt.common.util.CryptoUtil;
@@ -194,35 +194,10 @@ public class PspServiceImpl implements PspService {
 				List<String> operationCountries = extractCountriesFromOperations(pspDto.getOperations());
 
 				if (!operationCurrencies.isEmpty()) {
-					fynxt.brand.shared.dto.ValidationResult currencyValidation =
-							inputSchemaService.validateCurrencies(operationCurrencies, inputSchema);
-					if (!currencyValidation.isSuccess()) {
-						String errorMessage = "Invalid currencies in PSP operations";
-						var errorResponse = currencyValidation.getErrorResponse();
-						if (errorResponse != null) {
-							var body = errorResponse.getBody();
-							if (body != null && body.getMessage() != null) {
-								errorMessage = body.getMessage();
-							}
-						}
-						throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-					}
+					inputSchemaService.validateCurrencies(operationCurrencies, inputSchema);
 				}
-
 				if (!operationCountries.isEmpty()) {
-					fynxt.brand.shared.dto.ValidationResult countryValidation =
-							inputSchemaService.validateCountries(operationCountries, inputSchema);
-					if (!countryValidation.isSuccess()) {
-						String errorMessage = "Invalid countries in PSP operations";
-						var errorResponse = countryValidation.getErrorResponse();
-						if (errorResponse != null) {
-							var body = errorResponse.getBody();
-							if (body != null && body.getMessage() != null) {
-								errorMessage = body.getMessage();
-							}
-						}
-						throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
-					}
+					inputSchemaService.validateCountries(operationCountries, inputSchema);
 				}
 			}
 		}

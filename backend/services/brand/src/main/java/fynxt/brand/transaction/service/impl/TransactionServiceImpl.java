@@ -1,6 +1,5 @@
 package fynxt.brand.transaction.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.transaction.dto.TransactionDto;
 import fynxt.brand.transaction.dto.TransactionSearchCriteria;
 import fynxt.brand.transaction.entity.Transaction;
@@ -9,6 +8,7 @@ import fynxt.brand.transaction.query.TransactionQueryBuilder;
 import fynxt.brand.transaction.repository.TransactionRepository;
 import fynxt.brand.transaction.service.TransactionService;
 import fynxt.brand.transaction.service.mappers.TransactionMapper;
+import fynxt.common.enums.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;

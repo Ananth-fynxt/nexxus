@@ -11,7 +11,7 @@ import fynxt.brand.transaction.service.mappers.TransactionMapper;
 import fynxt.brand.transaction.step.TransactionStep;
 import fynxt.brand.transaction.step.factory.TransactionStepFactory;
 import fynxt.common.enums.ErrorCode;
-import fynxt.common.exception.TransactionException;
+import fynxt.common.exception.AppException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class TransactionOrchestratorImpl implements TransactionOrchestrator {
 		try {
 			TransactionStep nextStep = determineNextStep(context);
 			return executeStep(context, nextStep);
-		} catch (TransactionException e) {
+		} catch (AppException e) {
 			Transaction transaction = context.getTransaction();
 			if (transaction != null
 					&& transaction.getId() != null
@@ -85,7 +85,7 @@ public class TransactionOrchestratorImpl implements TransactionOrchestrator {
 	private TransactionStep getTransactionStep(TransactionStatus targetStatus) {
 		TransactionStep targetStep = stepFactory.getStepForStatus(targetStatus);
 		if (targetStep == null) {
-			throw new TransactionException(
+			throw new AppException(
 					"No transaction step found for status: " + targetStatus, ErrorCode.TRANSACTION_PROCESSING_ERROR);
 		}
 		return targetStep;
@@ -94,11 +94,10 @@ public class TransactionOrchestratorImpl implements TransactionOrchestrator {
 	private TransactionStep determineNextStep(TransactionExecutionContext context) {
 		List<TransactionStep> validSteps = getValidNextSteps(context);
 		if (validSteps.isEmpty()) {
-			throw new TransactionException(
-					"No valid transaction steps found", ErrorCode.TRANSACTION_NO_VALID_STEPS_FOUND);
+			throw new AppException("No valid transaction steps found", ErrorCode.TRANSACTION_NO_VALID_STEPS_FOUND);
 		}
 		if (validSteps.size() > 1) {
-			throw new TransactionException(
+			throw new AppException(
 					"Multiple valid transaction steps found", ErrorCode.TRANSACTION_MULTIPLE_STEPS_FOUND);
 		}
 		return validSteps.getFirst();
@@ -144,7 +143,7 @@ public class TransactionOrchestratorImpl implements TransactionOrchestrator {
 		TransactionStatus currentStatus = transaction.getStatus();
 		if (!flowConfigurationService.isValidTransition(
 				transaction.getFlowTargetId(), transaction.getFlowActionId(), currentStatus, targetStatus)) {
-			throw new TransactionException("Transaction transition not valid", ErrorCode.TRANSACTION_INVALID_STATUS);
+			throw new AppException("Transaction transition not valid", ErrorCode.TRANSACTION_INVALID_STATUS);
 		}
 	}
 }

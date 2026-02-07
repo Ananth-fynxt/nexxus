@@ -1,4 +1,4 @@
-package fynxt.brand.shared.util;
+package fynxt.brand.external.util;
 
 import java.util.HashMap;
 import java.util.Map;

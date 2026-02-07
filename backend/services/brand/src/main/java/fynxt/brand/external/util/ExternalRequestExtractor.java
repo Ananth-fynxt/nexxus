@@ -1,13 +1,12 @@
 package fynxt.brand.external.util;
 
-import fynxt.brand.shared.util.RequestBodyExtractor;
-import fynxt.brand.shared.util.ValidationUtils;
 import fynxt.brand.transaction.entity.TransactionIdGenerator;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,20 +43,58 @@ public class ExternalRequestExtractor {
 	}
 
 	public String extractTransactionId(Map<String, Object> requestBody, Map<String, Object> queryParams) {
-		if (ValidationUtils.isNotNullOrEmpty(queryParams)) {
-			String txnId = ValidationUtils.findValueByPrefix(queryParams, TransactionIdGenerator.TRANSACTION);
-			if (ValidationUtils.isNotNullOrEmpty(txnId)) {
+		if (queryParams != null && !queryParams.isEmpty()) {
+			String txnId = findValueByPrefix(queryParams, TransactionIdGenerator.TRANSACTION);
+			if (txnId != null && !txnId.isBlank()) {
 				return txnId;
 			}
 		}
 
-		if (ValidationUtils.isNotNullOrEmpty(requestBody)) {
-			String txnId = ValidationUtils.findValueByPrefix(requestBody, TransactionIdGenerator.TRANSACTION);
-			if (ValidationUtils.isNotNullOrEmpty(txnId)) {
+		if (requestBody != null && !requestBody.isEmpty()) {
+			String txnId = findValueByPrefix(requestBody, TransactionIdGenerator.TRANSACTION);
+			if (txnId != null && !txnId.isBlank()) {
 				return txnId;
 			}
 		}
 
+		return null;
+	}
+
+	/**
+	 * Recursively finds the first string value that starts with the given prefix in a map/list/array structure.
+	 */
+	private static String findValueByPrefix(Object obj, String prefix) {
+		if (obj == null || prefix == null) {
+			return null;
+		}
+		if (obj instanceof String str) {
+			return str.startsWith(prefix) ? str : null;
+		}
+		if (obj instanceof Map<?, ?> map) {
+			for (Object value : map.values()) {
+				String result = findValueByPrefix(value, prefix);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		if (obj instanceof List<?> list) {
+			for (Object item : list) {
+				String result = findValueByPrefix(item, prefix);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
+		if (obj.getClass().isArray()) {
+			int length = java.lang.reflect.Array.getLength(obj);
+			for (int i = 0; i < length; i++) {
+				String result = findValueByPrefix(java.lang.reflect.Array.get(obj, i), prefix);
+				if (result != null) {
+					return result;
+				}
+			}
+		}
 		return null;
 	}
 

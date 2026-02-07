@@ -1,4 +1,4 @@
-package fynxt.brand.flow;
+package fynxt.brand.flow.controller;
 
 import fynxt.common.http.ApiResponse;
 import fynxt.common.http.ResponseBuilder;

@@ -1,7 +1,5 @@
 package fynxt.brand.external.util;
 
-import fynxt.brand.shared.util.ValidationUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,23 +21,23 @@ public class ExternalRequestMapper {
 		externalDto.put("token", token);
 		externalDto.put("step", step);
 
-		if (ValidationUtils.isNotNullOrEmpty(tnxId)) {
+		if (tnxId != null && !tnxId.isBlank()) {
 			externalDto.put("tnxId", tnxId);
 		}
 
-		if (ValidationUtils.isNotNullOrEmpty(requestBody)) {
+		if (requestBody != null && !requestBody.isEmpty()) {
 			externalDto.put("body", requestBody);
 		}
 
-		if (ValidationUtils.isNotNullOrEmpty(queryParams)) {
+		if (queryParams != null && !queryParams.isEmpty()) {
 			externalDto.put("query", queryParams);
 		}
 
-		if (ValidationUtils.isNotNullOrEmpty(headers)) {
+		if (headers != null && !headers.isEmpty()) {
 			externalDto.put("headers", headers);
 		}
 
-		if (ValidationUtils.isNotNullOrEmpty(rawBody)) {
+		if (rawBody != null && !rawBody.isBlank()) {
 			externalDto.put("rawBody", rawBody);
 		}
 

@@ -65,7 +65,28 @@ public enum ErrorCode {
 	TRANSACTION_CURRENCY_INVALID("1713", "Invalid transaction currency"),
 	FLOW_DEFINITION_NOT_FOUND("1714", "Flow definition not found"),
 	FLOW_DEFINITION_CODE_REQUIRED("1715", "Flow definition code is required"),
-	INVALID_REQUEST_BODY("1716", "Invalid request body");
+	INVALID_REQUEST_BODY("1716", "Invalid request body"),
+
+	SESSION_NOT_FOUND("1720", "Session not found"),
+	SESSION_EXPIRED("1721", "Session expired"),
+	SESSION_INVALID_TOKEN("1722", "Invalid session token"),
+
+	TOKEN_DECRYPTION_FAILED("1603", "Token decryption failed"),
+
+	TRANSACTION_LIMIT_NOT_FOUND("1730", "Transaction limit not found"),
+	TRANSACTION_LIMIT_ALREADY_EXISTS("1731", "Transaction limit already exists"),
+
+	ROUTING_RULE_NOT_FOUND("1740", "Routing rule not found"),
+
+	RISK_RULE_NOT_FOUND("1750", "Risk rule not found"),
+	PSP_CONFIGURATION_ERROR("1751", "PSP configuration error"),
+	RISK_RULE_CRITERIA_TYPE_REQUIRED("1752", "Risk rule criteria type is required"),
+	RISK_RULE_CRITERIA_VALUE_REQUIRED("1753", "Risk rule criteria value is required"),
+
+	PSP_GROUP_NOT_FOUND("1404", "PSP group not found"),
+	PSP_GROUP_ALREADY_EXISTS("1405", "PSP group already exists"),
+
+	FEE_NOT_FOUND("1450", "Fee not found");
 
 	private final String code;
 	private final String message;

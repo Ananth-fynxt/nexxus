@@ -1,4 +1,4 @@
-package fynxt.brand.shared.validators;
+package fynxt.brand.routingrule.util;
 
 import java.util.Map;
 

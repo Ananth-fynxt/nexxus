@@ -1,9 +1,6 @@
 package fynxt.common.http;
 
 import fynxt.common.enums.ErrorCode;
-import fynxt.common.exception.ErrorDetail;
-
-import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -23,6 +20,5 @@ public interface ResponseBuilder {
 
 	<T> ResponseEntity<ApiResponse<Object>> paginated(Page<T> page, String message);
 
-	ResponseEntity<ApiResponse<Object>> error(
-			ErrorCode errorCode, String detail, HttpStatus status, List<ErrorDetail> errors);
+	ResponseEntity<ApiResponse<Object>> error(ErrorCode errorCode, String messageOverride, HttpStatus status);
 }

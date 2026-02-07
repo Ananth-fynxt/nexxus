@@ -6,8 +6,8 @@ import fynxt.brand.webhook.repository.WebhookRepository;
 import fynxt.brand.webhook.service.WebhookService;
 import fynxt.brand.webhook.service.mappers.WebhookMapper;
 import fynxt.common.enums.ErrorCode;
+import fynxt.common.exception.AppException;
 import fynxt.common.exception.ErrorCategory;
-import fynxt.common.exception.TransactionException;
 
 import java.util.List;
 import java.util.UUID;
@@ -47,8 +47,8 @@ public class WebhookServiceImpl implements WebhookService {
 	public WebhookDto read(Short id) {
 		Webhook webhook = webhookRepository
 				.findById(id)
-				.orElseThrow(() -> new TransactionException(
-						"Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
+				.orElseThrow(() ->
+						new AppException("Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
 		return webhookMapper.toWebhookDto(webhook);
 	}
 
@@ -57,8 +57,8 @@ public class WebhookServiceImpl implements WebhookService {
 	public WebhookDto update(Short id, @Valid WebhookDto webhookDto) {
 		Webhook existingWebhook = webhookRepository
 				.findById(id)
-				.orElseThrow(() -> new TransactionException(
-						"Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
+				.orElseThrow(() ->
+						new AppException("Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
 
 		if (!existingWebhook.getBrandId().equals(webhookDto.getBrandId())
 				|| !existingWebhook.getEnvironmentId().equals(webhookDto.getEnvironmentId())
@@ -78,8 +78,8 @@ public class WebhookServiceImpl implements WebhookService {
 	public void delete(Short id) {
 		Webhook webhook = webhookRepository
 				.findById(id)
-				.orElseThrow(() -> new TransactionException(
-						"Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
+				.orElseThrow(() ->
+						new AppException("Webhook not found", ErrorCode.RESOURCE_NOT_FOUND, ErrorCategory.NOT_FOUND));
 
 		webhook.softDelete();
 		webhookRepository.save(webhook);
@@ -88,7 +88,7 @@ public class WebhookServiceImpl implements WebhookService {
 	private void verifyWebhookNotExists(WebhookDto webhookDto) {
 		if (webhookRepository.existsByBrandIdAndEnvironmentIdAndStatusType(
 				webhookDto.getBrandId(), webhookDto.getEnvironmentId(), webhookDto.getStatusType())) {
-			throw new TransactionException(
+			throw new AppException(
 					"Webhook already exists for this brand, environment and status type",
 					ErrorCode.DUPLICATE_RESOURCE,
 					ErrorCategory.CONFLICT);

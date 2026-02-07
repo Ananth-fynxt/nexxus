@@ -4,7 +4,7 @@ import fynxt.brand.psp.entity.Psp;
 import fynxt.brand.psp.service.filter.PspFilterContext;
 import fynxt.brand.psp.service.filter.PspFilterStrategy;
 import fynxt.brand.routingrule.dto.RoutingRuleDto;
-import fynxt.brand.shared.validators.ConditionValidator;
+import fynxt.brand.routingrule.util.ConditionValidator;
 import fynxt.brand.transaction.service.RoutingCalculationService;
 
 import java.math.BigDecimal;

@@ -1,11 +1,12 @@
 package fynxt.brand.session.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.session.dto.TransactionSession;
 import fynxt.brand.session.entity.Session;
 import fynxt.brand.session.repository.SessionRepository;
 import fynxt.brand.session.service.SessionService;
 import fynxt.brand.session.service.util.TokenUtils;
+import fynxt.common.enums.ErrorCode;
+import fynxt.common.util.CryptoProperties;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -13,7 +14,6 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,11 +23,9 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class SessionServiceImpl implements SessionService {
 
+	private final CryptoProperties cryptoProperties;
 	private final SessionRepository sessionRepository;
 	private final ObjectMapper objectMapper;
-
-	@Value("${session.hmac-key}")
-	private String hmacKey;
 
 	private static final int DEFAULT_TIMEOUT_MINUTES = 5;
 
@@ -49,7 +47,7 @@ public class SessionServiceImpl implements SessionService {
 				});
 
 		String sessionToken = generateSessionTokenFromTransactionData(transactionData);
-		String sessionTokenHash = TokenUtils.hmacSha256(hmacKey, sessionToken);
+		String sessionTokenHash = TokenUtils.hmacSha256(cryptoProperties.hmacKey(), sessionToken);
 
 		Integer timeoutMinutes = calculateTimeoutMinutes(pspTimeoutSeconds);
 
@@ -100,7 +98,7 @@ public class SessionServiceImpl implements SessionService {
 	@Override
 	public TransactionSession getTransactionResponseBySessionToken(String sessionToken) {
 
-		String sessionTokenHash = TokenUtils.hmacSha256(hmacKey, sessionToken);
+		String sessionTokenHash = TokenUtils.hmacSha256(cryptoProperties.hmacKey(), sessionToken);
 		Session session = sessionRepository
 				.findBySessionTokenHash(sessionTokenHash)
 				.orElseThrow(
@@ -132,7 +130,7 @@ public class SessionServiceImpl implements SessionService {
 	public boolean validateSession(String sessionToken) {
 
 		try {
-			String sessionTokenHash = TokenUtils.hmacSha256(hmacKey, sessionToken);
+			String sessionTokenHash = TokenUtils.hmacSha256(cryptoProperties.hmacKey(), sessionToken);
 			Session session = sessionRepository
 					.findBySessionTokenHash(sessionTokenHash)
 					.orElseThrow(() ->

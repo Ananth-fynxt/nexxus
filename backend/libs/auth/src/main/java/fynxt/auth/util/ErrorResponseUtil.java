@@ -29,22 +29,40 @@ public class ErrorResponseUtil {
 
 	private ErrorResponseUtil() {}
 
+	private static String currentUtcTimestamp() {
+		return OffsetDateTime.now(ZoneOffset.UTC)
+				.truncatedTo(ChronoUnit.SECONDS)
+				.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+	}
+
+	private static void writeJsonResponse(HttpServletResponse response, Map<String, Object> body, HttpStatus httpStatus)
+			throws IOException {
+		response.setStatus(httpStatus.value());
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+		response.getWriter().write(objectMapper.writeValueAsString(body));
+		response.getWriter().flush();
+	}
+
 	public static void writeErrorResponse(
 			HttpServletRequest request, HttpServletResponse response, ErrorCode errorCode, HttpStatus httpStatus)
 			throws IOException {
+		writeErrorResponse(response, errorCode, httpStatus);
+	}
 
-		response.setStatus(httpStatus.value());
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-
+	public static void writeErrorResponse(HttpServletResponse response, ErrorCode errorCode, HttpStatus httpStatus)
+			throws IOException {
 		Map<String, Object> errorResponse = new HashMap<>();
 		errorResponse.put("code", errorCode.getCode());
 		errorResponse.put("message", errorCode.getMessage());
-		String timestamp = OffsetDateTime.now(ZoneOffset.UTC)
-				.truncatedTo(ChronoUnit.SECONDS)
-				.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-		errorResponse.put("timestamp", timestamp);
+		errorResponse.put("timestamp", currentUtcTimestamp());
+		writeJsonResponse(response, errorResponse, httpStatus);
+	}
 
-		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
-		response.getWriter().flush();
+	public static void writeErrorResponse(HttpServletResponse response, String message, HttpStatus httpStatus)
+			throws IOException {
+		Map<String, Object> errorResponse = new HashMap<>();
+		errorResponse.put("message", message);
+		errorResponse.put("timestamp", currentUtcTimestamp());
+		writeJsonResponse(response, errorResponse, httpStatus);
 	}
 }

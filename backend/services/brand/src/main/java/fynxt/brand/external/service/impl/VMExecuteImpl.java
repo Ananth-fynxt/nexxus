@@ -1,18 +1,19 @@
 package fynxt.brand.external.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
+import fynxt.brand.config.properties.ApiProperties;
 import fynxt.brand.environment.dto.EnvironmentCredentialsDto;
 import fynxt.brand.environment.dto.EnvironmentDto;
 import fynxt.brand.environment.service.EnvironmentService;
 import fynxt.brand.external.dto.VmExecutionDto;
 import fynxt.brand.external.service.VMExecuteService;
+import fynxt.brand.external.util.CredentialSanitizer;
+import fynxt.brand.external.util.JsonSchemaAndPayloadValidator;
 import fynxt.brand.psp.entity.Psp;
 import fynxt.brand.psp.entity.PspOperation;
 import fynxt.brand.psp.service.PspOperationsService;
 import fynxt.brand.psp.service.PspService;
-import fynxt.brand.shared.util.CredentialSanitizer;
-import fynxt.brand.shared.validators.JsonSchemaAndPayloadValidator;
-import fynxt.brand.shared.validators.SchemaValidationException;
+import fynxt.common.enums.ErrorCode;
+import fynxt.common.exception.AppException;
 import fynxt.common.util.CryptoUtil;
 import fynxt.denovm.dto.DenoVMRequest;
 import fynxt.denovm.dto.DenoVMResult;
@@ -30,7 +31,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,12 +40,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequiredArgsConstructor
 public class VMExecuteImpl implements VMExecuteService {
 
-	@Value("${api.backend-server-url}")
-	private String backendServerUrl;
-
-	@Value("${api.prefix}")
-	private String apiPrefix;
-
+	private final ApiProperties apiProperties;
 	private final PspService pspService;
 	private final PspOperationsService pspOperationsService;
 	private final FlowDefinitionService flowDefinitionService;
@@ -158,8 +153,10 @@ public class VMExecuteImpl implements VMExecuteService {
 	private DenoVMRequest.DenoVMUrls buildDenoVMUrls(
 			String token, String transactionId, String successRedirectUrl, String failureRedirectUrl) {
 		DenoVMRequest.DenoVMServerUrls serverUrls = new DenoVMRequest.DenoVMServerUrls(
-				backendServerUrl + apiPrefix + "/external/inbound/r/redirect/" + token + "/" + transactionId,
-				backendServerUrl + apiPrefix + "/external/inbound/w/webhook/" + token + "/" + transactionId);
+				apiProperties.backendServerUrl() + apiProperties.prefix() + "/external/inbound/r/redirect/" + token
+						+ "/" + transactionId,
+				apiProperties.backendServerUrl() + apiProperties.prefix() + "/external/inbound/w/webhook/" + token + "/"
+						+ transactionId);
 
 		DenoVMRequest.DenoVMOriginUrls originUrls =
 				new DenoVMRequest.DenoVMOriginUrls(successRedirectUrl, failureRedirectUrl, null);
@@ -274,7 +271,7 @@ public class VMExecuteImpl implements VMExecuteService {
 			String dataJson = objectMapper.writeValueAsString(dataToValidate);
 			schemaValidator.validateAndThrow(stepSchemaJson, dataJson);
 			return null;
-		} catch (SchemaValidationException e) {
+		} catch (AppException e) {
 			return DenoVMResult.error(validationType + " validation failed for step '" + step + "': " + e.getMessage());
 		} catch (Exception e) {
 			return DenoVMResult.error("Failed to validate " + schemaType + ": " + e.getMessage());

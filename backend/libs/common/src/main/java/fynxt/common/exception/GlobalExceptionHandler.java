@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(BaseException.class)
 	public ResponseEntity<ApiResponse<Object>> handleBaseException(BaseException ex) {
-		return responseBuilder.error(ex.errorCode(), ex.detail(), ex.httpStatus(), ex.errors());
+		return responseBuilder.error(ex.errorCode(), ex.getMessage(), ex.httpStatus());
 	}
 
 	@ExceptionHandler(ResponseStatusException.class)
@@ -29,12 +29,12 @@ public class GlobalExceptionHandler {
 		HttpStatus status = HttpStatus.valueOf(ex.getStatusCode().value());
 		ErrorCode resolved = ErrorCode.fromCode(ex.getReason());
 		ErrorCode errorCode = resolved != null ? resolved : ErrorCode.GENERIC_ERROR;
-		String detail = resolved != null ? null : ex.getReason();
-		return responseBuilder.error(errorCode, detail, status, null);
+		String messageOverride = resolved != null ? null : ex.getReason();
+		return responseBuilder.error(errorCode, messageOverride, status);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ApiResponse<Object>> handleGeneric(Exception ex) {
-		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+		return responseBuilder.error(ErrorCode.GENERIC_ERROR, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

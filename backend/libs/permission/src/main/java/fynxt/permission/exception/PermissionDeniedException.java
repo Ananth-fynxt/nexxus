@@ -10,7 +10,10 @@ public class PermissionDeniedException extends BaseException {
 		super(message, ErrorCode.AUTH_INSUFFICIENT_PERMISSIONS, ErrorCategory.FORBIDDEN);
 	}
 
-	public PermissionDeniedException(String message, String errorCode) {
-		super(message, ErrorCode.AUTH_INSUFFICIENT_PERMISSIONS, ErrorCategory.FORBIDDEN, errorCode);
+	public PermissionDeniedException(String message, String detail) {
+		super(
+				message + (detail != null && !detail.isBlank() ? ": " + detail : ""),
+				ErrorCode.AUTH_INSUFFICIENT_PERMISSIONS,
+				ErrorCategory.FORBIDDEN);
 	}
 }

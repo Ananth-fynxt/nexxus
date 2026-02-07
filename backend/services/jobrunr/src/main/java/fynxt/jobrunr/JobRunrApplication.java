@@ -5,10 +5,7 @@ import org.jobrunr.spring.autoconfigure.storage.JobRunrSqlStorageAutoConfigurati
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(exclude = {
-		JobRunrAutoConfiguration.class,
-		JobRunrSqlStorageAutoConfiguration.class
-})
+@SpringBootApplication(exclude = {JobRunrAutoConfiguration.class, JobRunrSqlStorageAutoConfiguration.class})
 public class JobRunrApplication {
 
 	public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package fynxt.brand.fee.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.fee.dto.FeeComponentDto;
 import fynxt.brand.fee.dto.FeeDto;
 import fynxt.brand.fee.entity.Fee;
@@ -13,6 +12,7 @@ import fynxt.brand.fee.service.FeeService;
 import fynxt.brand.fee.service.mappers.FeeComponentMapper;
 import fynxt.brand.fee.service.mappers.FeeMapper;
 import fynxt.brand.psp.service.PspService;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.enums.Status;
 import fynxt.common.service.NameUniquenessService;
 import fynxt.flowaction.service.FlowActionService;

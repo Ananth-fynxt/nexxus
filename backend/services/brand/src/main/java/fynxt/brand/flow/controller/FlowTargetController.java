@@ -1,7 +1,7 @@
-package fynxt.brand.flow;
+package fynxt.brand.flow.controller;
 
 import fynxt.brand.flow.dto.FlowTargetResponseDto;
-import fynxt.brand.shared.service.FlowTargetInputSchemaService;
+import fynxt.brand.flow.service.FlowTargetInputSchemaService;
 import fynxt.common.http.ApiResponse;
 import fynxt.common.http.ResponseBuilder;
 import fynxt.flowtarget.dto.FlowTargetDto;

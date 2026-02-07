@@ -7,7 +7,7 @@ import fynxt.brand.transaction.repository.TransactionRepository;
 import fynxt.brand.transaction.service.TransactionFlowConfigurationService;
 import fynxt.brand.transaction.service.mappers.TransactionMapper;
 import fynxt.common.enums.ErrorCode;
-import fynxt.common.exception.TransactionException;
+import fynxt.common.exception.AppException;
 
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +42,7 @@ public abstract class AbstractTransactionStep implements TransactionStep {
 		context.setTransaction(latestTransaction);
 		if (!precondition(context)) {
 			Transaction tx = context.getTransaction();
-			throw new TransactionException(
+			throw new AppException(
 					String.format(
 							"Precondition failed for transition %s -> %s (flowTargetId=%s, flowActionId=%s, txnId=%s)",
 							tx.getStatus(),

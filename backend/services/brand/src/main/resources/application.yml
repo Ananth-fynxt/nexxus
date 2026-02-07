@@ -110,6 +110,7 @@ permission:
 app:
   crypto:
     secret-key: ${CRYPTO_SECRET_KEY}
+    hmac-key: ${SESSION_HMAC_KEY}
 
 fynxt:
   auth:

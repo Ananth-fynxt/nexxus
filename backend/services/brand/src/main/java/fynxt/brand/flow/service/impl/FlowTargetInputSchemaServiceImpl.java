@@ -1,11 +1,7 @@
-package fynxt.brand.shared.service.impl;
+package fynxt.brand.flow.service.impl;
 
-import fynxt.brand.shared.dto.ValidationResult;
-import fynxt.brand.shared.service.FlowTargetInputSchemaService;
-import fynxt.common.http.ApiResponse;
+import fynxt.brand.flow.service.FlowTargetInputSchemaService;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,8 +10,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -82,15 +79,15 @@ public class FlowTargetInputSchemaServiceImpl implements FlowTargetInputSchemaSe
 				&& extractCurrencies(inputSchema).contains(currency);
 	}
 
-	private ValidationResult validateEnumList(
+	private void validateEnumList(
 			List<String> values, Object inputSchema, String fieldName, String errorCode, String fieldDisplayName) {
 		if (values == null || values.isEmpty()) {
-			return ValidationResult.success();
+			return;
 		}
 
 		List<String> supportedValues = extractEnumArray(inputSchema, fieldName);
 		if (supportedValues.isEmpty()) {
-			return ValidationResult.success();
+			return;
 		}
 
 		List<String> invalidValues = values.stream()
@@ -104,24 +101,17 @@ public class FlowTargetInputSchemaServiceImpl implements FlowTargetInputSchemaSe
 					String.join(", ", invalidValues),
 					fieldDisplayName,
 					String.join(", ", supportedValues));
-			return ValidationResult.failure(ResponseEntity.badRequest()
-					.body(ApiResponse.builder()
-							.timestamp(OffsetDateTime.now(ZoneOffset.UTC))
-							.code(errorCode)
-							.message(errorMessage)
-							.build()));
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, errorMessage);
 		}
-
-		return ValidationResult.success();
 	}
 
 	@Override
-	public ValidationResult validateCurrencies(List<String> currencies, Object inputSchema) {
-		return validateEnumList(currencies, inputSchema, "currencies", "INVALID_CURRENCY", "currencies");
+	public void validateCurrencies(List<String> currencies, Object inputSchema) {
+		validateEnumList(currencies, inputSchema, "currencies", "INVALID_CURRENCY", "currencies");
 	}
 
 	@Override
-	public ValidationResult validateCountries(List<String> countries, Object inputSchema) {
-		return validateEnumList(countries, inputSchema, "countries", "INVALID_COUNTRY", "countries");
+	public void validateCountries(List<String> countries, Object inputSchema) {
+		validateEnumList(countries, inputSchema, "countries", "INVALID_COUNTRY", "countries");
 	}
 }

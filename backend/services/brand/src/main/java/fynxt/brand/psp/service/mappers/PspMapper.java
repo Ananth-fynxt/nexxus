@@ -1,10 +1,10 @@
 package fynxt.brand.psp.service.mappers;
 
+import fynxt.brand.flow.service.FlowTargetInputSchemaService;
 import fynxt.brand.psp.dto.*;
 import fynxt.brand.psp.entity.MaintenanceWindow;
 import fynxt.brand.psp.entity.Psp;
 import fynxt.brand.psp.entity.PspOperation;
-import fynxt.brand.shared.service.FlowTargetInputSchemaService;
 import fynxt.flowtarget.dto.FlowTargetDto;
 import fynxt.mapper.config.MapperCoreConfig;
 import fynxt.shared.dto.IdNameDto;

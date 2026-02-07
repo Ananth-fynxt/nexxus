@@ -1,6 +1,5 @@
 package fynxt.brand.riskrule.service.impl;
 
-import fynxt.brand.enums.ErrorCode;
 import fynxt.brand.psp.service.PspOperationsService;
 import fynxt.brand.psp.service.PspService;
 import fynxt.brand.riskrule.dto.RiskRuleDto;
@@ -12,6 +11,7 @@ import fynxt.brand.riskrule.repository.RiskRulePspRepository;
 import fynxt.brand.riskrule.repository.RiskRuleRepository;
 import fynxt.brand.riskrule.service.RiskRuleService;
 import fynxt.brand.riskrule.service.mappers.RiskRuleMapper;
+import fynxt.common.enums.ErrorCode;
 import fynxt.common.enums.Status;
 import fynxt.common.service.NameUniquenessService;
 import fynxt.flowaction.service.FlowActionService;
